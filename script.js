@@ -67,7 +67,7 @@ function manipulationOfMemoryValidation(instruction) {
     regex = new RegExp("([0-9]{2}|[0-9])", "g");
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
-    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand} | 0${firstAtribute} | 0${secondAtribute} </p>`;
+    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand} | ${(firstAtribute < 10? "0":"")+firstAtribute} | ${(secondAtribute < 10? "0":"")+secondAtribute} </p>`;
     manipulationOfMemoryOperation();
 }
 function manipulationOfPCValidation() { }
