@@ -1,0 +1,87 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    text-align: center;
+}
+
+.container{
+    display: inline-block;
+ 
+    width: 70vw;
+    height: 100vmin;
+    margin-left: 5px;
+    border-radius: 20px;
+    
+    border: 1px solid black;
+    margin-top: 20px;
+
+    overflow: hidden;
+}
+.little{
+    margin-top: 10px;
+    width: 45%;
+    height: 45%;
+    display: inline-block;
+    position: relative
+}
+.mini{
+    display: block;
+    width: 90%;
+    height: 20%;
+    margin: 1 ;
+    display: inline-block;
+    position: relative 
+  
+}
+.label{
+    margin-top: 10px;
+}
+.inbox{
+    font-weight: bold;
+    position: absolute;               /* 2 */
+    margin: 0;
+    left: 50%;
+   top: 50%;                         /* 3 */
+   transform: translate(-50%, -50%)
+}
+.caixa-de-texto{
+    border-radius: 10px;
+    width: 30%;
+    text-align: center;
+
+}
+.registrador-container{
+    margin-top: 10px;
+    display: block;
+    position: relative;    
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.enderecos-container-group{
+    width: 45%;
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+}
+.endereco{
+    width: 60%;
+}
+.endereco-container{
+   margin-top: 10px;
+    display: block;
+    position: relative;    
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.button-model{
+    position: relative;  
+    width: 70px;
+    top:90%;
+    transform: translate(0, -90%);
+}
+.pc{
+    height: 25px;
+    width: 30%;
+}

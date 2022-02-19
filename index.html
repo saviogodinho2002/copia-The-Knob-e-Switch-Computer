@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+<body>
+
+  <div class="container">
+    <p> Cópia do k&S</p> 
+   
+    <div class="container little">
+      <p class="label"> Comando interpretado </p>
+      <div class="container mini" id="caixa-comando-interepretado"> </div>
+      <p class="label"> Comando lido </p>
+      <div class="container mini" id="caixa-comando-lido">   </div>
+      <div class="container mini pc" id="caixa-program-counter">  <p class="label inbox" > PC:  0 </p> </div>
+     
+    </div>
+   
+    <div class="container little">
+      <div class="registrador-container"> 0  <input class="caixa-de-texto registrador"  name="Nome"  />   </div>
+      <div class="registrador-container"> 1  <input class="caixa-de-texto registrador"  name="Nome"  />   </div>
+      <div class="registrador-container"> 2  <input class="caixa-de-texto registrador"  name="Nome"  />   </div>
+      <div class="registrador-container"> 3  <input class="caixa-de-texto registrador"  name="Nome"  />   </div>
+     
+      <p class="label " id="flag-zero"> zero: false </p>
+      <p class="label " id="flag-negative"> negativo: false </p>
+     
+    </div>
+
+    <div class="container little ">
+
+      <div class="container enderecos-container-group">
+        <div class="endereco-container"> 0 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 1 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 2 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 3 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 4 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 5 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 6 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 7 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 8 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 9 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 10 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 11 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 12 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 13 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 14 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 15 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+       
+        
+      </div>
+      <div class="container enderecos-container-group">
+     
+        <div class="endereco-container"> 16 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 17 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 18 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 19 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 20 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 21 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 22 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 23 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 24 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 25 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 26 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 27 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 28 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 29 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 30 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        <div class="endereco-container"> 31 <input  class="caixa-de-texto endereco"  name="Nome"   /> </div>
+        
+      </div>
+     
+    </div>
+
+    <div class="container little">
+        <button class="button-model" onclick="nextStep()"> next</button>
+        <button class="button-model" onclick="resetPc()"> reset</button>
+    </div>
+  
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
