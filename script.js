@@ -96,7 +96,7 @@ function dataMovementValidation(instruction) {
 
 }
 function branchingValidation(instruction) {
-    //["jump", "junp", "juzp"]
+   
     let regex = new RegExp("([a-zA-Z]{4})", "g");
     comand = instruction.match(regex)[0].trim();
 
@@ -148,9 +148,9 @@ function aritmeticOperation() {
     } else if (comand.toLowerCase() == "mul") {
         regA.value = (regBValue * regCValue);
     } else if (comand.toLowerCase() == "and") {
-        regA.value = (regBValue > regCValue) ? regCValue : regBValue;
+        regA.value = regBValue | regCValue;//(regBValue > regCValue) ? regCValue : regBValue;
     } else if (comand.toLowerCase() == "or") {
-        regA.value = (regBValue > regCValue) ? regBValue : regCValue;
+        regA.value = regBValue & regCValue;//(regBValue > regCValue) ? regBValue : regCValue;
     }
     updateFlags(parseInt(regA.value));
 
@@ -171,7 +171,7 @@ function dataMovementOperation() {
         pointerB = document.getElementsByClassName("registrador")[secondAtribute];
     }
 
-    pointerA.value = comand.toLowerCase() == "not" ? pointerB.value * -1 : pointerB.value;
+    pointerA.value = comand.toLowerCase() == "not" ? pointerB.value * -1 : pointerB.value; //else comand == move
     updateFlags(parseInt(pointerA.value));
 
 }

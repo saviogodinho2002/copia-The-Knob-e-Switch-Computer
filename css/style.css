@@ -78,10 +78,62 @@ body{
 .button-model{
     position: relative;  
     width: 70px;
-    top:90%;
-    transform: translate(0, -90%);
+    top: 40%;
+    transform: translate(0, -60%);
 }
 .pc{
     height: 25px;
     width: 30%;
+}
+#alu-container{
+    height: 65%;
+    width: 50%;
+    margin-top: 10px;
+    float: right;
+    margin-right: 10px;
+    border-radius: 20px;
+    border: 1px solid black;
+    
+}
+.alu-cx{
+    margin-top: 10px;
+}
+.bus-label{
+    display: inline-block;
+}
+
+.dropdown{
+    display:block;
+       
+    margin: auto;
+    margin-top: 10px;
+    
+}
+#status-flags{
+    margin-top: 20px;
+}
+.drop-registers{
+    display:inline;
+}
+.bus-adress{
+    width: 20%;
+}
+.c-bus-container{
+    width: 45%;
+    height: 20%;
+  
+    float: left;
+    margin-top: 90px;
+    
+   
+}
+.memory-container{
+   float: left;
+   width: 40%;
+    height: 15%;
+   
+    margin-top: 10px;
+    margin-left: 10px;
+  /*   overflow:hidden; */
+   
 }
