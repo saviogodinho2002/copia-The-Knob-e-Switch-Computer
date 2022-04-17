@@ -18,7 +18,7 @@ function nextStep() {
     cxProgramCounterText.innerHTML = ` <p class="label inbox" > PC:  ${programCounter} </p>`;
 
 }
-function readInstruction() {
+function readInstruction() { //lexer
     const currentAdress = document.getElementsByClassName("endereco")[programCounter];
     const textOfCurrentAdress = currentAdress.value;
     cxReadedComand.innerHTML = ` <p class="label inbox" >  ${textOfCurrentAdress} </p>`;
@@ -38,7 +38,7 @@ function readInstruction() {
 
     regex = new RegExp("^\\s*([a-zA-Z]{4})\\s+[0]*(([0-9])|([0-2][0-9])|([3][0-1]))\\s*$", "g");
     if (textOfCurrentAdress.match(regex) != null) { //saltos condicionais
-        manipulationOfPCValidation();
+        branchingValidation(textOfCurrentAdress);
         return;
     }
     cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
@@ -51,6 +51,7 @@ function readInstruction() {
 function aritmeticValidation(instruction) {//TODO: passar trabalho para a operation
     let regex = new RegExp("([a-zA-Z]{2,3})", "g");
     comand = instruction.match(regex)[0];
+
     if (!comandSet[0].includes(comand.toLowerCase())) {
         cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
         return;
@@ -58,10 +59,6 @@ function aritmeticValidation(instruction) {//TODO: passar trabalho para a operat
 
     regex = new RegExp("([0]*[0-3]{1})", "g");
 
-    if (comand.toLowerCase() != "not" && instruction.match(regex).length < 3) {
-        cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
-        return;
-    }
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
     thirdAtribute = parseInt(instruction.match(regex)[2]);
@@ -71,33 +68,67 @@ function aritmeticValidation(instruction) {//TODO: passar trabalho para a operat
 function dataMovementValidation(instruction) {
     let regex = new RegExp("([a-zA-Z]{3,5})", "g");
 
-    comand = instruction.match(regex)[0];
+    comand = instruction.match(regex)[0].trim();
 
     if (!comandSet[1].includes(comand.toLowerCase())) {
         cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
         return;
     }
     regex = null;
-    if (comand.toLowerCase() == "load") {
-        regex = new RegExp("(R[0-3]\\s+[0-9]{1,2})", "g");
-    } else if (comand.toLowerCase() == "store") {
-        regex = new RegExp("\\s+([0-9]{1,2}\\s+R[0-3])", "g");
-    }
-    else {
-        regex = new RegExp("(R[0-3]\\s+R[0-3])", "g");
+    const regexExps = ["([a-zA-Z]{4}\\s+R[0-3]\\s+[0-9]{1,2})", "[a-zA-Z]\\s+([0-9]{1,2}\\s+R[0-3])", "([a-zA-Z]{3,4}\\s+R[0-3]\\s+R[0-3])"];
+
+
+    for (const rexp of regexExps) {
+        regex = new RegExp(rexp, "g");
+        if (instruction.match(regex) != null) {
+            regex = new RegExp("([0-9]{1,2})", "g");
+            firstAtribute = parseInt(instruction.match(regex)[0]);
+            secondAtribute = parseInt(instruction.match(regex)[1]);
+            cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute} </p>`;
+            dataMovementOperation();
+            return;
+        }
     }
 
-    if (instruction.match(regex) == null) {
+    cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
+    return;
+
+
+}
+function branchingValidation(instruction) {
+    //["jump", "junp", "juzp"]
+    let regex = new RegExp("([a-zA-Z]{4})", "g");
+    comand = instruction.match(regex)[0].trim();
+
+    if (!comandSet[2].includes(comand.toLowerCase())) {
         cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
         return;
     }
+
     regex = new RegExp("([0-9]{1,2})", "g");
     firstAtribute = parseInt(instruction.match(regex)[0]);
-    secondAtribute = parseInt(instruction.match(regex)[1]);
-    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute} </p>`;
-    dataMovementOperation();
+    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${firstAtribute<9?0:""}${firstAtribute} </p>`;
+    branchingOperation();
 }
-function manipulationOfPCValidation() { }
+function branchingOperation() {
+    const flagZero = document.getElementById("flag-zero");
+    const flagNegative = document.getElementById("flag-negative");
+    console.log(flagNegative.innerText );
+    console.log(flagZero.innerText );
+
+    if (comand.toLowerCase().trim() == "jump") {
+        programCounter = firstAtribute -1;
+    } else if (comand.toLowerCase().trim() == "junp") {
+        if (flagNegative.innerText.trim() == "negative: true"){
+            programCounter = firstAtribute-1;
+        }
+    } if (comand.toLowerCase().trim() == "juzp") {
+        if (flagZero.innerText.trim() == "zero: true"){
+             programCounter = firstAtribute -1;
+        }
+    }
+
+}
 function aritmeticOperation() {
 
     const regA = document.getElementsByClassName("registrador")[firstAtribute];
@@ -135,18 +166,18 @@ function dataMovementOperation() {
         pointerA = document.getElementsByClassName("endereco")[firstAtribute];
         pointerB = document.getElementsByClassName("registrador")[secondAtribute];
 
-    }else {
+    } else {
         pointerA = document.getElementsByClassName("registrador")[firstAtribute];
         pointerB = document.getElementsByClassName("registrador")[secondAtribute];
     }
-  
-    pointerA.value = comand.toLowerCase() == "not"? pointerB.value * -1 : pointerB.value;
+
+    pointerA.value = comand.toLowerCase() == "not" ? pointerB.value * -1 : pointerB.value;
     updateFlags(parseInt(pointerA.value));
 
 }
-function updateFlags(lastOperationResult){
+function updateFlags(lastOperationResult) {
     document.getElementById("flag-zero").innerHTML = "zero: " + (lastOperationResult == 0);
-    document.getElementById("flag-negative").innerHTML = "negative: " + (lastOperationResult  < 0);
+    document.getElementById("flag-negative").innerHTML = "negative: " + (lastOperationResult < 0);
 }
 function resetPc() {
     programCounter = 0;
