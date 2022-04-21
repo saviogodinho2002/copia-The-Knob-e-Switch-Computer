@@ -5,6 +5,27 @@ const comandSet = [
 ];
 
 let firstAtribute = secondAtribute = thirdAtribute = 0;
+const ABusRegisterDrop = document.getElementById("drop-registers-a");
+const BBusRegisterDrop = document.getElementById("drop-registers-b");
+const CBusFromDrop = document.getElementById("drop-mem-buffer");
+const CbusRegisterDrop = document.getElementById("drop-registers-c");
+const aluOperationsDrop = document.getElementById("operations-alu");
+
+const AbusData = document.getElementsByClassName("bus-adress")[0];
+const BbusData = document.getElementsByClassName("bus-adress")[1];
+
+const CbusData = document.getElementsByClassName("bus-adress")[2];
+
+const AAluRegister = document.getElementsByClassName("alu-register")[0];
+const BAluRegister = document.getElementsByClassName("alu-register")[1];
+const BufferAluRegister = document.getElementsByClassName("alu-register")[2];
+
+const MemoryBusData = document.getElementById("memory-bus");
+
+let lastRegisterA =0;
+let lastRegisterB = 0;
+let lastAluOperation = "add";
+
 let comand;
 
 let programCounter = 0;
@@ -63,7 +84,8 @@ function aritmeticValidation(instruction) {//TODO: passar trabalho para a operat
     secondAtribute = parseInt(instruction.match(regex)[1]);
     thirdAtribute = parseInt(instruction.match(regex)[2]);
     cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | 0${firstAtribute} | 0${secondAtribute} | 0${thirdAtribute} </p>`;
-    aritmeticOperation();
+    
+    routine(secondAtribute, thirdAtribute,comandSet[0].indexOf(comand.toLowerCase().trim()),firstAtribute,"null");
 }
 function dataMovementValidation(instruction) {
     let regex = new RegExp("([a-zA-Z]{3,5})", "g");
@@ -111,6 +133,7 @@ function branchingValidation(instruction) {
     branchingOperation();
 }
 function branchingOperation() {
+
     const flagZero = document.getElementById("flag-zero");
     const flagNegative = document.getElementById("flag-negative");
     console.log(flagNegative.innerText );
@@ -130,29 +153,39 @@ function branchingOperation() {
 
 }
 function aritmeticOperation() {
-
-    const regA = document.getElementsByClassName("registrador")[firstAtribute];
-    const regB = document.getElementsByClassName("registrador")[secondAtribute];
-    const regAValue = parseInt(regA.value == "" ? 0 : regA.value);
+  
+    const regB = document.getElementsByClassName("registrador")[lastRegisterA];
     const regBValue = parseInt(regB.value == "" ? 0 : regB.value);
-    const regC = document.getElementsByClassName("registrador")[thirdAtribute];
+    const regC = document.getElementsByClassName("registrador")[lastRegisterB];
     const regCValue = parseInt(regC.value == "" ? 0 : regC.value);
 
 
-    if (comand.toLowerCase() == "add") {
-        regA.value = (regBValue + regCValue);
-    } else if (comand.toLowerCase() == "sub") {
-        regA.value = (regBValue - regCValue);
-    } else if (comand.toLowerCase() == "div") {
-        regA.value = (regBValue / regCValue);
-    } else if (comand.toLowerCase() == "mul") {
-        regA.value = (regBValue * regCValue);
-    } else if (comand.toLowerCase() == "and") {
-        regA.value = regBValue | regCValue;//(regBValue > regCValue) ? regCValue : regBValue;
-    } else if (comand.toLowerCase() == "or") {
-        regA.value = regBValue & regCValue;//(regBValue > regCValue) ? regBValue : regCValue;
+    if (comandSet[0][lastAluOperation] == "add") {
+
+        BufferAluRegister.value = (regBValue + regCValue);
+
+    } else if (comandSet[0][lastAluOperation] == "sub") {
+
+        BufferAluRegister.value = (regBValue - regCValue);
+
+    } else if (comandSet[0][lastAluOperation] == "div") {
+
+        BufferAluRegister.value = (regBValue / regCValue);
+
+    } else if (comandSet[0][lastAluOperation] == "mul") {
+
+        BufferAluRegister.value = (regBValue * regCValue);
+
+    } else if (comandSet[0][lastAluOperation] == "and") {
+        
+        BufferAluRegister.value = regBValue | regCValue;     //(regBValue > regCValue) ? regCValue : regBValue;
+
+    } else if (comandSet[0][lastAluOperation] == "or") {
+
+        BufferAluRegister.value = regBValue & regCValue;     //(regBValue > regCValue) ? regBValue : regCValue;
+
     }
-    updateFlags(parseInt(regA.value));
+    updateFlags(parseInt(BufferAluRegister.value));
 
 }
 function dataMovementOperation() {
@@ -171,7 +204,9 @@ function dataMovementOperation() {
         pointerB = document.getElementsByClassName("registrador")[secondAtribute];
     }
 
-    pointerA.value = comand.toLowerCase() == "not" ? pointerB.value * -1 : pointerB.value; //else comand == move
+    pointerA.value = comand.toLowerCase() == "not" ? 
+            pointerB.value * -1 :
+                 pointerB.value; //else comand == move
     updateFlags(parseInt(pointerA.value));
 
 }
@@ -182,4 +217,64 @@ function updateFlags(lastOperationResult) {
 function resetPc() {
     programCounter = 0;
     cxProgramCounterText.innerHTML = ` <p class="label inbox" > PC:  ${programCounter} </p>`;
+}
+function routine(registerOneIndex,registerTwoIndex,aluOperationIndex,outPutIndex,dataFromMemory){
+
+    setLastRegistersAndLastALUOperation(registerOneIndex,registerTwoIndex,aluOperationIndex);
+    setDropDownsPointers(aluOperationIndex,outPutIndex);
+    setDataOnBusABAdressAndMemoryBus(dataFromMemory);
+    setDataOnAluAandB();
+    aritmeticOperation();
+    setDataOnCbusAdress(dataFromMemory);
+    setDataOnOutPutRegisterOrMemory(outPutIndex);
+
+}
+function setLastRegistersAndLastALUOperation(ABusRegister,BBusRegister,AluOperation){
+    lastRegisterA = ABusRegister == -1? lastRegisterA:ABusRegister;
+    lastRegisterB = BBusRegister == -1? lastRegisterB:BBusRegister;
+    lastAluOperation = AluOperation == -1?lastAluOperation: AluOperation;
+
+}
+function setDropDownsPointers(AluOperation,outPut){
+ 
+    ABusRegisterDrop.selectedIndex = lastRegisterA;
+    BBusRegisterDrop.selectedIndex = lastRegisterB;
+
+    aluOperationsDrop.selectedIndex = lastAluOperation; 
+
+    CBusFromDrop.selectedIndex = AluOperation == -1? 1 : 0;
+    CbusRegisterDrop.selectedIndex = outPut;
+
+
+    // setDataOnCbusAdress
+   // setDataOnBusABAdressAndMemoryBus(lastRegisterA,lastRegisterB);
+
+}
+
+function setDataOnBusABAdressAndMemoryBus(memoryData){
+   // ABusRegisterDrop.selectedIndex = ABusRegister;
+    //BBusRegisterDrop.selectedIndex = BBusRegister;
+
+    AbusData.value = document.getElementsByClassName("registrador")[lastRegisterA].value;
+    BbusData.value = document.getElementsByClassName("registrador")[lastRegisterB].value;
+    MemoryBusData.value = memoryData == "null"? Math.floor(Math.random() * 1000): memoryData;
+
+}
+
+
+function setDataOnAluAandB(){
+    //lastAluOperation = -1?lastAluOperation: comandSet[0][aluOperation];
+    AAluRegister.value = AbusData.value;
+    BAluRegister.value = BbusData.value;
+    
+    //aritimetic
+
+}
+
+function setDataOnCbusAdress(memoryData){
+   CbusData.value = memoryData == "null"? BufferAluRegister.value:MemoryBusData.value ;
+}
+function setDataOnOutPutRegisterOrMemory(index){
+    typeMem = index == 4?"endereco":"registrador";
+    document.getElementsByClassName(typeMem)[index].value = CbusData.value;
 }
