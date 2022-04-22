@@ -22,7 +22,7 @@ const BufferAluRegister = document.getElementsByClassName("alu-register")[2];
 
 const MemoryBusData = document.getElementById("memory-bus");
 
-let lastRegisterA =0;
+let lastRegisterA = 0;
 let lastRegisterB = 0;
 let lastAluOperation = "add";
 
@@ -32,12 +32,39 @@ let programCounter = 0;
 const cxProgramCounterText = document.querySelector("#caixa-program-counter");
 const cxReadedComand = document.querySelector("#caixa-comando-lido");
 const cxInterpretedComand = document.querySelector("#caixa-comando-interepretado");
+
+let callbackRoutine = 0;
+
+let time = 500;
+
+function execRoutine(){
+    clearInterval(callbackRoutine);
+    callbackRoutine = setInterval(()=>{
+        
+            readInstruction();
+            incrementProgramCounter();
+        
+
+
+    },time*10);
+}
+
+
 function nextStep() {
     readInstruction();
+    incrementProgramCounter();
+
+}
+
+function incrementProgramCounter() {
     programCounter++;
     programCounter = programCounter % 32;
     cxProgramCounterText.innerHTML = ` <p class="label inbox" > PC:  ${programCounter} </p>`;
 
+}
+function resetPc() {
+    programCounter = 0;
+    cxProgramCounterText.innerHTML = ` <p class="label inbox" > PC:  ${programCounter} </p>`;
 }
 function readInstruction() { //lexer
     const currentAdress = document.getElementsByClassName("endereco")[programCounter];
@@ -62,8 +89,9 @@ function readInstruction() { //lexer
         branchingValidation(textOfCurrentAdress);
         return;
     }
+    clearInterval(callbackRoutine);
     cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
-    
+
 }
 function aritmeticValidation(instruction) {//TODO: passar trabalho para a operation
     let regex = new RegExp("([a-zA-Z]{2,3})", "g");
@@ -71,6 +99,7 @@ function aritmeticValidation(instruction) {//TODO: passar trabalho para a operat
 
     if (!comandSet[0].includes(comand.toLowerCase())) {
         cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
+        clearInterval(callbackRoutine);
         return;
     }
 
@@ -80,8 +109,8 @@ function aritmeticValidation(instruction) {//TODO: passar trabalho para a operat
     secondAtribute = parseInt(instruction.match(regex)[1]);
     thirdAtribute = parseInt(instruction.match(regex)[2]);
     cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | 0${firstAtribute} | 0${secondAtribute} | 0${thirdAtribute} </p>`;
-    
-    routine(secondAtribute, thirdAtribute,comandSet[0].indexOf(comand.toLowerCase().trim()),firstAtribute,"null");
+
+    routine(secondAtribute, thirdAtribute, comandSet[0].indexOf(comand.toLowerCase().trim()), firstAtribute, "null");
 }
 function dataMovementValidation(instruction) {
     let regex = new RegExp("([a-zA-Z]{3,5})", "g");
@@ -90,19 +119,20 @@ function dataMovementValidation(instruction) {
 
     if (!comandSet[1].includes(comand.toLowerCase())) {
         cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
+        clearInterval(callbackRoutine);
         return;
     }
     regex = null;
-    const regexExps = ["([a-zA-Z]{4}\\s+R[0-3]\\s+[0-9]{1,2})", "[a-zA-Z]\\s+([0-9]{1,2}\\s+R[0-3])", "([a-zA-Z]{3,4}\\s+R[0-3]\\s+R[0-3])","([a-zA-Z]{3}\\s+R[0-3]\\s+[0-9]{1,2})"];
+    const regexExps = ["([a-zA-Z]{4}\\s+R[0-3]\\s+[0-9]{1,2})", "[a-zA-Z]\\s+([0-9]{1,2}\\s+R[0-3])", "([a-zA-Z]{3,4}\\s+R[0-3]\\s+R[0-3])", "([a-zA-Z]{3}\\s+R[0-3]\\s+[0-9]{1,2})"];
 
 
-    for (let i = 0; i<4;i++) {
+    for (let i = 0; i < 4; i++) {
         regex = new RegExp(regexExps[i], "g");
         if (instruction.match(regex) != null) {
             regex = new RegExp("([0-9]{1,2})", "g");
             firstAtribute = parseInt(instruction.match(regex)[0]);
             secondAtribute = parseInt(instruction.match(regex)[1]);
-            
+
             cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute} </p>`;
             dataMovementOperation();
             return;
@@ -110,47 +140,50 @@ function dataMovementValidation(instruction) {
     }
 
     cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
+    clearInterval(callbackRoutine);;
     return;
+
 
 
 }
 function branchingValidation(instruction) {
-   
+
     let regex = new RegExp("([a-zA-Z]{3,6})", "g");
     comand = instruction.match(regex)[0].trim();
 
     if (!comandSet[2].includes(comand.toLowerCase())) {
+        clearInterval(callbackRoutine);
         cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
         return;
     }
 
     regex = new RegExp("([0-9]{1,2})", "g");
     firstAtribute = parseInt(instruction.match(regex)[0]);
-    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${firstAtribute<9?0:""}${firstAtribute} </p>`;
+    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${firstAtribute < 9 ? 0 : ""}${firstAtribute} </p>`;
     branchingOperation();
 }
 function branchingOperation() {
 
     const flagZero = document.getElementById("flag-zero");
     const flagNegative = document.getElementById("flag-negative");
-    console.log(flagNegative.innerText );
-    console.log(flagZero.innerText );
+    console.log(flagNegative.innerText);
+    console.log(flagZero.innerText);
 
     if (comand.toLowerCase().trim() == "branch") {
-        programCounter = firstAtribute -1;
+        programCounter = firstAtribute - 1;
     } else if (comand.toLowerCase().trim() == "bneg") {
-        if (flagNegative.innerText.trim() == "negative: true"){
-            programCounter = firstAtribute-1;
+        if (flagNegative.innerText.trim() == "negative: true") {
+            programCounter = firstAtribute - 1;
         }
     } if (comand.toLowerCase().trim() == "bzero") {
-        if (flagZero.innerText.trim() == "zero: true"){
-             programCounter = firstAtribute -1;
+        if (flagZero.innerText.trim() == "zero: true") {
+            programCounter = firstAtribute - 1;
         }
     }
 
 }
 function aritmeticOperation() {
-  
+
     const regB = document.getElementsByClassName("registrador")[lastRegisterA];
     const regBValue = parseInt(regB.value == "" ? 0 : regB.value);
     const regC = document.getElementsByClassName("registrador")[lastRegisterB];
@@ -174,15 +207,15 @@ function aritmeticOperation() {
         BufferAluRegister.value = (regBValue * regCValue);
 
     } else if (comandSet[0][lastAluOperation] == "and") {
-        
-        BufferAluRegister.value = regBValue | regCValue;    
+
+        BufferAluRegister.value = regBValue | regCValue;
 
     } else if (comandSet[0][lastAluOperation] == "or" && thirdAtribute != -1) {
 
-        BufferAluRegister.value = regBValue | regCValue;  
-        console.log("vasco")   
+        BufferAluRegister.value = regBValue | regCValue;
+        console.log("vasco")
 
-    }else if (comandSet[1][lastAluOperation-1] == "not") {
+    } else if (comandSet[1][lastAluOperation - 1] == "not") {
 
         BufferAluRegister.value = -1 * (regBValue | regCValue);
         console.log("vasco")     //
@@ -193,85 +226,98 @@ function aritmeticOperation() {
 function dataMovementOperation() {
     thirdAtribute = 0;
     if (comand.toLowerCase() == "load") {
-       
-        const data =  document.getElementsByClassName("endereco")[secondAtribute].value;
 
-        routine(-1,-1,4,firstAtribute, data);
+        const data = document.getElementsByClassName("endereco")[secondAtribute].value;
+
+        routine(-1, -1, 4, firstAtribute, data);
 
     } else if (comand.toLowerCase() == "store") {
-    
 
-        routine(secondAtribute,secondAtribute,4,firstAtribute,"null" );
 
-    } else if(comand.toLowerCase() == "move"){
-     
-        routine(firstAtribute,firstAtribute,4,secondAtribute,"null");
-    }else if(comand.toLowerCase() == "not"){
+        routine(secondAtribute, secondAtribute, 4, firstAtribute, "null");
+
+    } else if (comand.toLowerCase() == "move") {
+
+        routine(firstAtribute, firstAtribute, 4, secondAtribute, "null");
+    } else if (comand.toLowerCase() == "not") {
         thirdAtribute = -1;
-        routine(firstAtribute,firstAtribute,4,secondAtribute,"null");
+        routine(firstAtribute, firstAtribute, 4, secondAtribute, "null");
     }
 
-  
+
 }
 function updateFlags(lastOperationResult) {
     document.getElementById("flag-zero").innerHTML = "zero: " + (lastOperationResult == 0);
     document.getElementById("flag-negative").innerHTML = "negative: " + (lastOperationResult < 0);
 }
-function resetPc() {
-    programCounter = 0;
-    cxProgramCounterText.innerHTML = ` <p class="label inbox" > PC:  ${programCounter} </p>`;
-}
-function routine(registerOneIndex,registerTwoIndex,aluOperationIndex,outPutIndex,dataFromMemory){
 
-    setLastRegistersAndLastALUOperation(registerOneIndex,registerTwoIndex,aluOperationIndex);
-    setDropDownsPointers(aluOperationIndex,outPutIndex);
-    setDataOnBusABAdressAndMemoryBus(dataFromMemory);
-    setDataOnAluAandB();
-    aritmeticOperation();
-    setDataOnCbusAdress(dataFromMemory);
-    setDataOnOutPutRegisterOrMemory(outPutIndex);
+function routine(registerOneIndex, registerTwoIndex, aluOperationIndex, outPutIndex, dataFromMemory) {
+    /* 
+     setTimeout(()=>{
+       
+    },500);
+    
+    */
+    //setLastRegistersAndLastALUOperation(registerOneIndex, registerTwoIndex, aluOperationIndex);
+    setTimeout(()=>{
+        setLastRegistersAndLastALUOperation(registerOneIndex, registerTwoIndex, aluOperationIndex);
+    },time*2);
+    setTimeout(()=>{
+        setDropDownsPointers(aluOperationIndex, outPutIndex);
+    },time*3);
+    setTimeout(()=>{
+        setDataOnBusABAdressAndMemoryBus(dataFromMemory);
+    },time*4);
+    setTimeout(()=>{
+        setDataOnAluAandB();
+    },time*5);
+    setTimeout(()=>{
+        aritmeticOperation();
+    },time*6);
+    setTimeout(()=>{
+        setDataOnCbusAdress(dataFromMemory);
+    },time*7);
+    setTimeout(()=>{
+        setDataOnOutPutRegisterOrMemory(outPutIndex);
+    },time*8);
+    
 
 }
-function setLastRegistersAndLastALUOperation(ABusRegister,BBusRegister,AluOperation){
-    lastRegisterA = ABusRegister == -1? lastRegisterA:ABusRegister;
-    lastRegisterB = BBusRegister == -1? lastRegisterB:BBusRegister;
-    lastAluOperation = AluOperation == -1?lastAluOperation: AluOperation;
+function setLastRegistersAndLastALUOperation(ABusRegister, BBusRegister, AluOperation) {
+    lastRegisterA = ABusRegister == -1 ? lastRegisterA : ABusRegister;
+    lastRegisterB = BBusRegister == -1 ? lastRegisterB : BBusRegister;
+    lastAluOperation = AluOperation == -1 ? lastAluOperation : AluOperation;
 
 }
-function setDropDownsPointers(AluOperation,outPut){
- 
+function setDropDownsPointers(AluOperation, outPut) {
+
     ABusRegisterDrop.selectedIndex = lastRegisterA;
     BBusRegisterDrop.selectedIndex = lastRegisterB;
 
-    aluOperationsDrop.selectedIndex = lastAluOperation; 
+    aluOperationsDrop.selectedIndex = lastAluOperation;
 
-    CBusFromDrop.selectedIndex = AluOperation == -1? 1 : 0;
+    CBusFromDrop.selectedIndex = AluOperation == -1 ? 1 : 0;
     CbusRegisterDrop.selectedIndex = outPut;
 
 }
 
-function setDataOnBusABAdressAndMemoryBus(memoryData){
-  
+function setDataOnBusABAdressAndMemoryBus(memoryData) {
 
     AbusData.value = document.getElementsByClassName("registrador")[lastRegisterA].value;
     BbusData.value = document.getElementsByClassName("registrador")[lastRegisterB].value;
-    MemoryBusData.value = memoryData == "null"? Math.floor(Math.random() * 1000): memoryData;
+    MemoryBusData.value = memoryData == "null" ? Math.floor(Math.random() * 1000) : memoryData;
 
 }
+function setDataOnAluAandB() {
 
-
-function setDataOnAluAandB(){
-  
     AAluRegister.value = AbusData.value;
     BAluRegister.value = BbusData.value;
-    
- 
 }
 
-function setDataOnCbusAdress(memoryData){
-   CbusData.value = memoryData == "null"? BufferAluRegister.value:MemoryBusData.value ;
+function setDataOnCbusAdress(memoryData) {
+    CbusData.value = memoryData == "null" ? BufferAluRegister.value : MemoryBusData.value;
 }
-function setDataOnOutPutRegisterOrMemory(index){
-    typeMem = index > 3?"endereco":"registrador";
+function setDataOnOutPutRegisterOrMemory(index) {
+    typeMem = index > 3 ? "endereco" : "registrador";
     document.getElementsByClassName(typeMem)[index].value = CbusData.value;
 }
