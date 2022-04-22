@@ -1,7 +1,7 @@
 const comandSet = [
     ["add", "sub", "div", "mul", "or", "and"],
     ["move", "load", "store", "not"],
-    ["jump", "junp", "juzp"]
+    ["branch", "bzero", "bneg"]
 ];
 
 let firstAtribute = secondAtribute = thirdAtribute = 0;
@@ -57,17 +57,13 @@ function readInstruction() { //lexer
         return;
     }
 
-    regex = new RegExp("^\\s*([a-zA-Z]{4})\\s+[0]*(([0-9])|([0-2][0-9])|([3][0-1]))\\s*$", "g");
+    regex = new RegExp("^\\s*([a-zA-Z]{3,6})\\s+[0]*(([0-9])|([0-2][0-9])|([3][0-1]))\\s*$", "g");
     if (textOfCurrentAdress.match(regex) != null) { //saltos condicionais
         branchingValidation(textOfCurrentAdress);
         return;
     }
     cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
-    /* let regex = new RegExp("9","g") 
-    let string = "882392";//regex.exec();
-    console.log(string.match(regex));
-    */
-    //cxInterpretedComand.innerHTML  = ` <p class="label inbox" >  ${document.getElementsByClassName("endereco")[programCounter].value} </p>`;
+    
 }
 function aritmeticValidation(instruction) {//TODO: passar trabalho para a operation
     let regex = new RegExp("([a-zA-Z]{2,3})", "g");
@@ -120,7 +116,7 @@ function dataMovementValidation(instruction) {
 }
 function branchingValidation(instruction) {
    
-    let regex = new RegExp("([a-zA-Z]{4})", "g");
+    let regex = new RegExp("([a-zA-Z]{3,6})", "g");
     comand = instruction.match(regex)[0].trim();
 
     if (!comandSet[2].includes(comand.toLowerCase())) {
@@ -140,13 +136,13 @@ function branchingOperation() {
     console.log(flagNegative.innerText );
     console.log(flagZero.innerText );
 
-    if (comand.toLowerCase().trim() == "jump") {
+    if (comand.toLowerCase().trim() == "branch") {
         programCounter = firstAtribute -1;
-    } else if (comand.toLowerCase().trim() == "junp") {
+    } else if (comand.toLowerCase().trim() == "bneg") {
         if (flagNegative.innerText.trim() == "negative: true"){
             programCounter = firstAtribute-1;
         }
-    } if (comand.toLowerCase().trim() == "juzp") {
+    } if (comand.toLowerCase().trim() == "bzero") {
         if (flagZero.innerText.trim() == "zero: true"){
              programCounter = firstAtribute -1;
         }
