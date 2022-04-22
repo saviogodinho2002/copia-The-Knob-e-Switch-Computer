@@ -191,7 +191,7 @@ function aritmeticOperation() {
 
 }
 function dataMovementOperation() {
-    
+    thirdAtribute = 0;
     if (comand.toLowerCase() == "load") {
        
         const data =  document.getElementsByClassName("endereco")[secondAtribute].value;
