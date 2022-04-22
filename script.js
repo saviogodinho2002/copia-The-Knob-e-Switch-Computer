@@ -102,7 +102,7 @@ function dataMovementValidation(instruction) {
             regex = new RegExp("([0-9]{1,2})", "g");
             firstAtribute = parseInt(instruction.match(regex)[0]);
             secondAtribute = parseInt(instruction.match(regex)[1]);
-            thirdAtribute = -1;
+            
             cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute} </p>`;
             dataMovementOperation();
             return;
@@ -207,6 +207,7 @@ function dataMovementOperation() {
      
         routine(firstAtribute,firstAtribute,4,secondAtribute,"null");
     }else if(comand.toLowerCase() == "not"){
+        thirdAtribute = -1;
         routine(firstAtribute,firstAtribute,4,secondAtribute,"null");
     }
 
@@ -247,15 +248,10 @@ function setDropDownsPointers(AluOperation,outPut){
     CBusFromDrop.selectedIndex = AluOperation == -1? 1 : 0;
     CbusRegisterDrop.selectedIndex = outPut;
 
-
-    // setDataOnCbusAdress
-   // setDataOnBusABAdressAndMemoryBus(lastRegisterA,lastRegisterB);
-
 }
 
 function setDataOnBusABAdressAndMemoryBus(memoryData){
-   // ABusRegisterDrop.selectedIndex = ABusRegister;
-    //BBusRegisterDrop.selectedIndex = BBusRegister;
+  
 
     AbusData.value = document.getElementsByClassName("registrador")[lastRegisterA].value;
     BbusData.value = document.getElementsByClassName("registrador")[lastRegisterB].value;
@@ -265,12 +261,11 @@ function setDataOnBusABAdressAndMemoryBus(memoryData){
 
 
 function setDataOnAluAandB(){
-    //lastAluOperation = -1?lastAluOperation: comandSet[0][aluOperation];
+  
     AAluRegister.value = AbusData.value;
     BAluRegister.value = BbusData.value;
     
-    //aritimetic
-
+ 
 }
 
 function setDataOnCbusAdress(memoryData){
