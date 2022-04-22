@@ -97,15 +97,16 @@ function dataMovementValidation(instruction) {
         return;
     }
     regex = null;
-    const regexExps = ["([a-zA-Z]{4}\\s+R[0-3]\\s+[0-9]{1,2})", "[a-zA-Z]\\s+([0-9]{1,2}\\s+R[0-3])", "([a-zA-Z]{3,4}\\s+R[0-3]\\s+R[0-3])"];
+    const regexExps = ["([a-zA-Z]{4}\\s+R[0-3]\\s+[0-9]{1,2})", "[a-zA-Z]\\s+([0-9]{1,2}\\s+R[0-3])", "([a-zA-Z]{3,4}\\s+R[0-3]\\s+R[0-3])","([a-zA-Z]{3}\\s+R[0-3]\\s+[0-9]{1,2})"];
 
 
-    for (const rexp of regexExps) {
-        regex = new RegExp(rexp, "g");
+    for (let i = 0; i<4;i++) {
+        regex = new RegExp(regexExps[i], "g");
         if (instruction.match(regex) != null) {
             regex = new RegExp("([0-9]{1,2})", "g");
             firstAtribute = parseInt(instruction.match(regex)[0]);
             secondAtribute = parseInt(instruction.match(regex)[1]);
+            thirdAtribute = -1;
             cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute} </p>`;
             dataMovementOperation();
             return;
@@ -178,37 +179,42 @@ function aritmeticOperation() {
 
     } else if (comandSet[0][lastAluOperation] == "and") {
         
-        BufferAluRegister.value = regBValue | regCValue;     //(regBValue > regCValue) ? regCValue : regBValue;
+        BufferAluRegister.value = regBValue | regCValue;    
 
-    } else if (comandSet[0][lastAluOperation] == "or") {
+    } else if (comandSet[0][lastAluOperation] == "or" && thirdAtribute != -1) {
 
-        BufferAluRegister.value = regBValue & regCValue;     //(regBValue > regCValue) ? regBValue : regCValue;
+        BufferAluRegister.value = regBValue | regCValue;  
+        console.log("vasco")   
 
+    }else if (comandSet[1][lastAluOperation-1] == "not") {
+
+        BufferAluRegister.value = -1 * (regBValue | regCValue);
+        console.log("vasco")     //
     }
     updateFlags(parseInt(BufferAluRegister.value));
 
 }
 function dataMovementOperation() {
-    let pointerA;
-    let pointerB;
+    
     if (comand.toLowerCase() == "load") {
-        pointerA = document.getElementsByClassName("registrador")[firstAtribute];
-        pointerB = document.getElementsByClassName("endereco")[secondAtribute];
+       
+        const data =  document.getElementsByClassName("endereco")[secondAtribute].value;
+
+        routine(-1,-1,4,firstAtribute, data);
 
     } else if (comand.toLowerCase() == "store") {
-        pointerA = document.getElementsByClassName("endereco")[firstAtribute];
-        pointerB = document.getElementsByClassName("registrador")[secondAtribute];
+    
 
-    } else {
-        pointerA = document.getElementsByClassName("registrador")[firstAtribute];
-        pointerB = document.getElementsByClassName("registrador")[secondAtribute];
+        routine(secondAtribute,secondAtribute,4,firstAtribute,"null" );
+
+    } else if(comand.toLowerCase() == "move"){
+     
+        routine(firstAtribute,firstAtribute,4,secondAtribute,"null");
+    }else if(comand.toLowerCase() == "not"){
+        routine(firstAtribute,firstAtribute,4,secondAtribute,"null");
     }
 
-    pointerA.value = comand.toLowerCase() == "not" ? 
-            pointerB.value * -1 :
-                 pointerB.value; //else comand == move
-    updateFlags(parseInt(pointerA.value));
-
+  
 }
 function updateFlags(lastOperationResult) {
     document.getElementById("flag-zero").innerHTML = "zero: " + (lastOperationResult == 0);
@@ -275,6 +281,6 @@ function setDataOnCbusAdress(memoryData){
    CbusData.value = memoryData == "null"? BufferAluRegister.value:MemoryBusData.value ;
 }
 function setDataOnOutPutRegisterOrMemory(index){
-    typeMem = index == 4?"endereco":"registrador";
+    typeMem = index > 3?"endereco":"registrador";
     document.getElementsByClassName(typeMem)[index].value = CbusData.value;
 }
