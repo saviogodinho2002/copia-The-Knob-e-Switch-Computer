@@ -137,3 +137,6 @@ body{
   /*   overflow:hidden; */
    
 }
+.blue-input{
+    border: 3px solid blue;
+}
