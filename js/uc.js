@@ -1,4 +1,4 @@
-
+const adressAmount = 32;
 function buttonStartClick() {
     if (startOrStopButton.textContent == "start") {
         startOrStopButton.textContent = "stop";
@@ -8,9 +8,7 @@ function buttonStartClick() {
         stop();
     }
 }
-
 function execRoutine() {
-
     clearInterval(callbackRoutine);
     nextStep();
     callbackRoutine = setInterval(() => {
@@ -24,10 +22,8 @@ function stop() {
     while (stepsCallBacks.length) {
         clearTimeout(stepsCallBacks[iterator]);
         stepsCallBacks.shift();
-    }
-    
+    }   
 }
-
 function nextStep() {
     readInstruction();
     incrementProgramCounter();
@@ -35,13 +31,11 @@ function nextStep() {
 
 function incrementProgramCounter() {
     programCounter++;
-    programCounter = programCounter % 32;
-    cxProgramCounterText.innerHTML = ` <p class="label inbox" > PC:  ${programCounter} </p>`;
+    programCounter = programCounter % adressAmount;
+    programCounterText.innerText = `PC:  ${programCounter}`;
 
 }
 function resetPc() {
     programCounter = 0;
-    cxProgramCounterText.innerHTML = ` <p class="label inbox" > PC:  ${programCounter} </p>`;
-    stop();
-
+    programCounterText.innerText = `PC:  ${programCounter}`;
 }

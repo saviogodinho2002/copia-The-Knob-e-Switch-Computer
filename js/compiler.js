@@ -34,7 +34,7 @@ let lastAluOperation = "add";
 let comand;
 
 let programCounter = 0;
-const cxProgramCounterText = document.querySelector("#caixa-program-counter");
+const programCounterText = document.querySelector(".program-counter");
 const cxReadedComand = document.querySelector("#caixa-comando-lido");
 const cxInterpretedComand = document.querySelector("#caixa-comando-interepretado");
 

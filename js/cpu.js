@@ -220,17 +220,17 @@ function setZerosInAluRegistersAndBusRegister() {
 
     MemoryBusData.value = 0;
 
-    cxProgramCounterText.value = 0;
     cxReadedComand.value = 0;
     cxInterpretedComand.value = 0;
 }
 function verifyIfVoidString(element) {
     element.value = element.value == "" ? 0 : element.value;
 }
+
 function gerateMemAdress() {
     let htmlFirstSection = "";
     let htmlSecondSection = "";
-    const adressAmount = 32;
+   
     for (let i = 0; i < adressAmount; i++) {
         if (i < (adressAmount / 2))
             htmlFirstSection += `<div class="endereco-container"> ${i} <input class="caixa-de-texto endereco" name="instruction" onfocusout="verifyIfVoidString(this)"/> </div>`;
