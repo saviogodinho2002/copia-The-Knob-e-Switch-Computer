@@ -17,7 +17,7 @@ const BbusData = document.getElementsByClassName("bus-adress")[1];
 
 const CbusData = document.getElementsByClassName("bus-adress")[2];
 
-const AAluRegister = document.getElementsByClassName("alu-register")[0];
+const AluRegister = document.getElementsByClassName("alu-register")[0];
 const BAluRegister = document.getElementsByClassName("alu-register")[1];
 const BufferAluRegister = document.getElementsByClassName("alu-register")[2];
 
@@ -48,7 +48,7 @@ function buttonStartClick() {
         startOrStopButton.textContent = "stop";
         execRoutine();
     } else {
-        startOrStopButton.textContent  = "start";
+        startOrStopButton.textContent = "start";
         stop();
     }
 }
@@ -264,7 +264,6 @@ function dataMovementOperation() {
 
     } else if (comand.toLowerCase() == "store") {
 
-
         routine(secondAtribute, secondAtribute, 4, firstAtribute, null);
 
     } else if (comand.toLowerCase() == "move") {
@@ -286,10 +285,10 @@ function routine(registerOneIndex, registerTwoIndex, aluOperationIndex, outPutIn
     stepsCallBacks.push(setTimeout(() => {
         setLastRegistersAndLastALUOperation(registerOneIndex, registerTwoIndex, aluOperationIndex);
         setDropDownsPointers(registerOneIndex, outPutIndex);
-    
+
     }, time));
 
-   
+
     stepsCallBacks.push(setTimeout(() => {
         setDataOnBusABAdressAndMemoryBus(dataFromMemory);
 
@@ -349,9 +348,6 @@ function setDataOnBusABAdressAndMemoryBus(memoryData) {
     blankInput(AbusData);
     blankInput(BbusData);
     blankInput(MemoryBusData);
-
-
-
 }
 function setDataOnAluAandB() {
 
@@ -379,13 +375,10 @@ function setDataOnOutPutRegisterOrMemory(index) {
                 out.value = CbusData.value;
                 blankInput(out);
             }, time));
-
     } else {
         out.value = CbusData.value;
         blankInput(out);
     }
-
-
 }
 
 function blankInput(input) {
@@ -394,3 +387,54 @@ function blankInput(input) {
         input.classList.remove("blue-input");
     }, time);
 }
+
+function setZerosInMemAndRegis() {
+    const memAdress = document.getElementsByClassName("endereco");
+    const registers = document.getElementsByClassName("registrador");
+
+    for (const iterator of memAdress) {
+        iterator.value = iterator.value == "" ? 0 : iterator.value;
+    }
+    for (const iterator of registers) {
+        iterator.value = iterator.value == "" ? 0 : iterator.value;
+    }
+}
+function setZerosInAluRegistersAndBusRegister() {
+    AbusData.value = 0;
+    BbusData.value = 0;
+
+    CbusData.value = 0;
+
+    AluRegister.value = 0;
+    BAluRegister.value = 0;
+    BufferAluRegister.value = 0;
+
+    MemoryBusData.value = 0;
+
+    cxProgramCounterText.value = 0;
+    cxReadedComand.value = 0;
+    cxInterpretedComand.value = 0;
+}
+function verifyIfVoidString(element) {
+    element.value = element.value == "" ? 0 : element.value;
+}
+function gerateMemAdress() {
+    let htmlFirstSection = "";
+    let htmlSecondSection = "";
+    const adressAmount = 32;
+    for (let i = 0; i < adressAmount; i++) {
+        if (i < (adressAmount / 2))
+            htmlFirstSection += `<div class="endereco-container"> ${i} <input class="caixa-de-texto endereco" name="instruction" onfocusout="verifyIfVoidString(this)"/> </div>`;
+        else
+            htmlSecondSection += `<div class="endereco-container"> ${i} <input class="caixa-de-texto endereco" name="instruction" onfocusout="verifyIfVoidString(this)"/> </div>`;
+    }
+    const groupsAdress = document.getElementsByClassName("enderecos-container-group");
+    groupsAdress[0].innerHTML = htmlFirstSection;
+    groupsAdress[1].innerHTML = htmlSecondSection;
+
+}
+
+gerateMemAdress();
+setZerosInMemAndRegis();
+setZerosInAluRegistersAndBusRegister();
+
