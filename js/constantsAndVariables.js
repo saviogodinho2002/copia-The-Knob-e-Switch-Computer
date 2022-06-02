@@ -30,7 +30,8 @@ let comand;
 let programCounter = 0;
 const programCounterText = document.querySelector(".program-counter");
 const cxReadedComand = document.querySelector("#caixa-comando-lido");
-const cxInterpretedComand = document.querySelector("#caixa-comando-interepretado");
+const interpretedComand = document.querySelector("#comando-interpretado");
+const cxProgramCounter = document.getElementsByClassName("pc")[0];
 
 let callbackRoutine = 0;
 

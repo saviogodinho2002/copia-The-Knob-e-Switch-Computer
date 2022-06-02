@@ -16,9 +16,15 @@
 
     <div class="container little">
       <p class="label"> Comando interpretado </p>
-      <div class="container mini" id="caixa-comando-interepretado"> </div>
+      <div class="container mini" id="caixa-comando-interepretado">
+        <p class="label inbox" id="comando-interpretado" >  </p>  
+      </div>
       <p class="label"> Comando lido </p>
-      <div class="container mini" id="caixa-comando-lido"> </div>
+
+      <div class="container mini" id="caixa-comando-lido">
+        <p class="label inbox" id="comando-lido" >  </p> 
+      </div>
+
       <div class="container mini pc" id="caixa-program-counter">
         <p class="label inbox program-counter"> PC: 0 </p>
       </div>
@@ -27,11 +33,14 @@
 
     <div class="container little">
       <p class="label"> Registradores </p>
-      <div class="registrador-container"> 0 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)" /> </div>
-      <div class="registrador-container"> 1 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)" /> </div>
-      <div class="registrador-container"> 2 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)" /> </div>
-      <div class="registrador-container"> 3 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)"
-        /> </div>
+      <div class="registrador-container"> 0 <input class="caixa-de-texto registrador" name="instruction"
+          onfocusout="verifyIfVoidString(this)" /> </div>
+      <div class="registrador-container"> 1 <input class="caixa-de-texto registrador" name="instruction"
+          onfocusout="verifyIfVoidString(this)" /> </div>
+      <div class="registrador-container"> 2 <input class="caixa-de-texto registrador" name="instruction"
+          onfocusout="verifyIfVoidString(this)" /> </div>
+      <div class="registrador-container"> 3 <input class="caixa-de-texto registrador" name="instruction"
+          onfocusout="verifyIfVoidString(this)" /> </div>
 
       <button class="button-model" onclick="nextStep()"> next</button>
       <button class="button-model" onclick="resetPc()"> reset</button>
@@ -42,13 +51,9 @@
     <div class="container little ">
 
       <div class="container enderecos-container-group">
-       
-
 
       </div>
       <div class="container enderecos-container-group">
-
-       
 
       </div>
 
@@ -103,11 +108,13 @@
         <div>
           <div>
             <p class="label bus-label"> A: </p>
-            <input class="caixa-de-texto alu-cx alu-register"  onfocusout="verifyIfVoidString(this)" name="instruction" />
+            <input class="caixa-de-texto alu-cx alu-register" onfocusout="verifyIfVoidString(this)"
+              name="instruction" />
 
             <p class="label bus-label"> B: </p>
 
-            <input class="caixa-de-texto alu-cx alu-register" onfocusout="verifyIfVoidString(this)" name="instruction" />
+            <input class="caixa-de-texto alu-cx alu-register" onfocusout="verifyIfVoidString(this)"
+              name="instruction" />
 
           </div>
           <div id="alu-registers-box">
@@ -118,11 +125,12 @@
               <option value="3">A * B</option>
               <option value="4">A | B</option>
               <option value="5">A & B</option>
-            
+
             </select>
 
             <p class="label bus-label"> Buffer: </p>
-            <input class="caixa-de-texto alu-cx alu-register" onfocusout="verifyIfVoidString(this)" name="instruction" />
+            <input class="caixa-de-texto alu-cx alu-register" onfocusout="verifyIfVoidString(this)"
+              name="instruction" />
           </div>
 
           <div id="status-flags">
@@ -140,13 +148,14 @@
         <input class="caixa-de-texto" id="memory-bus" name="instruction" />
 
       </div>
-     
+
     </div>
     <script src="/js/instructions.js"></script>
     <script src="/js/constantsAndVariables.js"></script>
     <script src="/js/uc.js"></script>
     <script src="/js/compiler.js"></script>
     <script src="/js/cpu.js"></script>
+    <script src="/js/gerateAdressAndSetZeros.js"></script>
 </body>
 
 </html>

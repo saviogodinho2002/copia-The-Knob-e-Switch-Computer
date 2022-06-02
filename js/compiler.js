@@ -39,7 +39,7 @@ function aritmeticValidation(instruction) {//TODO: passar trabalho para a operat
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
     thirdAtribute = parseInt(instruction.match(regex)[2]);
-    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | 0${firstAtribute} | 0${secondAtribute} | 0${thirdAtribute} </p>`;
+    interpretedComand.innerText = `${comand.toLowerCase()} | 0${firstAtribute} | 0${secondAtribute} | 0${thirdAtribute} `;
 
     routine(secondAtribute, thirdAtribute, comandSet[0].indexOf(comand.toLowerCase().trim()), firstAtribute, null);
 }
@@ -63,7 +63,7 @@ function dataMovementValidation(instruction) {
             firstAtribute = parseInt(instruction.match(regex)[0]);
             secondAtribute = parseInt(instruction.match(regex)[1]);
 
-            cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute} </p>`;
+            interpretedComand.innerText = `${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute}`;
             dataMovementOperation();
             return;
         }
@@ -84,7 +84,7 @@ function branchingValidation(instruction) {
 
     regex = new RegExp("([0-9]{1,2})", "g");
     firstAtribute = parseInt(instruction.match(regex)[0]);
-    cxInterpretedComand.innerHTML = ` <p class="label inbox" > ${comand.toLowerCase()} | ${firstAtribute < 9 ? 0 : ""}${firstAtribute} </p>`;
+    interpretedComand.innerText = `${comand.toLowerCase()} | ${firstAtribute < 9 ? 0 : ""}${firstAtribute} `;
     branchingOperation();
 }
 

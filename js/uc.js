@@ -10,12 +10,22 @@ function buttonStartClick() {
 }
 function execRoutine() {
     clearInterval(callbackRoutine);
-    nextStep();
+    //nextStep();
+    readInstruction();
+    setTimeout(() =>{
+        blankInput(cxProgramCounter);
+        incrementProgramCounter();
+    },2000);
     callbackRoutine = setInterval(() => {
-        nextStep();
-
+        //nextStep();
+        readInstruction();
+        setTimeout(() =>{
+            blankInput(cxProgramCounter);
+            incrementProgramCounter();
+        },2000);
     }, time * 10);
 }
+
 function stop() {
     clearInterval(callbackRoutine);
     let iterator = 0;
@@ -26,7 +36,7 @@ function stop() {
 }
 function nextStep() {
     readInstruction();
-    incrementProgramCounter();
+   
 }
 
 function incrementProgramCounter() {
@@ -41,6 +51,6 @@ function resetPc() {
 }
 function interrupt(){
     clearInterval(callbackRoutine);
-    cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
+    interpretedComand.innerText = `operação invalida`
     startOrStopButton.textContent = "start";
 }
