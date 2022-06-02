@@ -39,3 +39,8 @@ function resetPc() {
     programCounter = 0;
     programCounterText.innerText = `PC:  ${programCounter}`;
 }
+function interrupt(){
+    clearInterval(callbackRoutine);
+    cxInterpretedComand.innerHTML = ` <p class="label inbox" > operação invalida </p>`
+    startOrStopButton.textContent = "start";
+}
