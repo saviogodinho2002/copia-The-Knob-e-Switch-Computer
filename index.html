@@ -27,10 +27,11 @@
 
     <div class="container little">
       <p class="label"> Registradores </p>
-      <div class="registrador-container"> 0 <input class="caixa-de-texto registrador" name="instruction" /> </div>
-      <div class="registrador-container"> 1 <input class="caixa-de-texto registrador" name="instruction" /> </div>
-      <div class="registrador-container"> 2 <input class="caixa-de-texto registrador" name="instruction" /> </div>
-      <div class="registrador-container"> 3 <input class="caixa-de-texto registrador" name="instruction" /> </div>
+      <div class="registrador-container"> 0 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)" /> </div>
+      <div class="registrador-container"> 1 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)" /> </div>
+      <div class="registrador-container"> 2 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)" /> </div>
+      <div class="registrador-container"> 3 <input class="caixa-de-texto registrador" name="instruction" onfocusout="verifyIfVoidString(this)"
+        /> </div>
 
       <button class="button-model" onclick="nextStep()"> next</button>
       <button class="button-model" onclick="resetPc()"> reset</button>
@@ -142,7 +143,9 @@
      
     </div>
 
-    <script src="script.js"></script>
+    <script src="/js/uc.js"></script>
+    <script src="/js/compiler.js"></script>
+    <script src="/js/cpu.js"></script>
 </body>
 
 </html>
