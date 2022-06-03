@@ -5,7 +5,7 @@ function buttonStartClick() {
         execRoutine();
     } else {
         startOrStopButton.textContent = "start";
-        stop();
+        cleanProcessQueue();
     }
 }
 function execRoutine() {
@@ -28,7 +28,7 @@ function execRoutine() {
     }, time * 10);
 }
 
-function stop() {
+function cleanProcessQueue() {
     clearInterval(routineCallback);
     clearTimeout(incrementProgramCounterCallBack);
     while (stepsCallBacks.length) {
@@ -80,5 +80,15 @@ function branchingOperation() {
         execRoutine();
         programCounterText.innerText = `PC:  ${programCounter}`;
     }, 2000);
+
+}
+function machineCycleControlOperation(){
+    if (comand.toLowerCase().trim() == "halt"){
+        startOrStopButton.textContent = "start";
+        cleanProcessQueue();
+
+    }else if(comand.toLowerCase().trim() == "nop"){
+        routine(-1, -1, 4, -1, -1);
+    }
 
 }

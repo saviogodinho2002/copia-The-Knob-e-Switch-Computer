@@ -1,32 +1,39 @@
-
 function readInstruction() { // analisador sintatico
     const currentAdress = document.getElementsByClassName("endereco")[programCounter];
     const textOfCurrentAdress = currentAdress.value;
     cxReadedComand.innerHTML = ` <p class="label inbox" >  ${textOfCurrentAdress} </p>`;
 
-    let regex = new RegExp("^\\s*([a-zA-Z]{2,3})\\s+(R[0]*[0-3]{1})\\s+(R[0]*[0-3]{1})\\s+(R[0]*[0-3]{1})\\s*$", "g");
+    let regex = new RegExp( regExpSyntaxValidation[0], "g");
 
     if (textOfCurrentAdress.match(regex) != null) { //add e os caralho
         aritmeticValidation(textOfCurrentAdress);
         return;
     }
 
-    regex = new RegExp("^\\s*([a-zA-Z]{3,5})\\s+([R]{0,1}[0]*[0-9]{1,2})\\s+([R]{0,1}[0]*[0-9]{1,2})\\s*$", "g");
-    if (textOfCurrentAdress.match(regex) != null) { //load e stor
-        dataMovementValidation(textOfCurrentAdress);
-        return;
+    for (const regexValid of regExpSyntaxValidation[1]) { //load e store
+        regex = new RegExp(regexValid, "g");
+        if (textOfCurrentAdress.match(regex) != null) {
+            dataMovementValidation(textOfCurrentAdress);
+            return;
+        }
     }
 
-    regex = new RegExp("^\\s*([a-zA-Z]{3,6})\\s+[0]*(([0-9])|([0-2][0-9])|([3][0-1]))\\s*$", "g");
+    regex = new RegExp(regExpSyntaxValidation[2], "g");
     if (textOfCurrentAdress.match(regex) != null) { //saltos condicionais
         branchingValidation(textOfCurrentAdress);
+        return;
+    }
+    regex = new RegExp(regExpSyntaxValidation[3],"g");
+    if(textOfCurrentAdress.match(regex)){
+        machineCycleControlValidation(textOfCurrentAdress)
+
         return;
     }
     interrupt();
 
 }
 function aritmeticValidation(instruction) {
-    let regex = new RegExp("([a-zA-Z]{2,3})", "g");
+    let regex = new RegExp(regExpCatchComand[0], "g");
     comand = instruction.match(regex)[0];
 
     if (!comandSet[0].includes(comand.toLowerCase())) {
@@ -34,7 +41,7 @@ function aritmeticValidation(instruction) {
         return;
     }
 
-    regex = new RegExp("([0]*[0-3]{1})", "g");
+    regex = new RegExp(regExpCatchParamters[0], "g");
 
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
@@ -44,7 +51,7 @@ function aritmeticValidation(instruction) {
     routine(secondAtribute, thirdAtribute, comandSet[0].indexOf(comand.toLowerCase().trim()), firstAtribute, null);
 }
 function dataMovementValidation(instruction) {
-    let regex = new RegExp("([a-zA-Z]{3,5})", "g");
+    let regex = new RegExp(regExpCatchComand[1], "g");
 
     comand = instruction.match(regex)[0].trim();
 
@@ -52,29 +59,18 @@ function dataMovementValidation(instruction) {
         interrupt();
         return;
     }
-    regex = null;
-    const regexExps = ["([a-zA-Z]{4}\\s+R[0-3]\\s+[0-9]{1,2})", "[a-zA-Z]\\s+([0-9]{1,2}\\s+R[0-3])", "([a-zA-Z]{3,4}\\s+R[0-3]\\s+R[0-3])", "([a-zA-Z]{3}\\s+R[0-3]\\s+[0-9]{1,2})"];
 
+    regex = new RegExp(regExpCatchParamters[1], "g");
+    firstAtribute = parseInt(instruction.match(regex)[0]);
+    secondAtribute = parseInt(instruction.match(regex)[1]);
 
-    for (let i = 0; i < 4; i++) {
-        regex = new RegExp(regexExps[i], "g");
-        if (instruction.match(regex) != null) {
-            regex = new RegExp("([0-9]{1,2})", "g");
-            firstAtribute = parseInt(instruction.match(regex)[0]);
-            secondAtribute = parseInt(instruction.match(regex)[1]);
+    interpretedComand.innerText = `${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute}`;
+    dataMovementOperation();
 
-            interpretedComand.innerText = `${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute}`;
-            dataMovementOperation();
-            return;
-        }
-    }
-
-    interrupt();
-    return;
 }
 function branchingValidation(instruction) {
 
-    let regex = new RegExp("([a-zA-Z]{3,6})", "g");
+    let regex = new RegExp(regExpCatchComand[2], "g");
     comand = instruction.match(regex)[0].trim();
 
     if (!comandSet[2].includes(comand.toLowerCase())) {
@@ -82,9 +78,21 @@ function branchingValidation(instruction) {
         return;
     }
 
-    regex = new RegExp("([0-9]{1,2})", "g");
+    regex = new RegExp(regExpCatchParamters[2], "g");
     firstAtribute = parseInt(instruction.match(regex)[0]);
     interpretedComand.innerText = `${comand.toLowerCase()} | ${firstAtribute < 9 ? 0 : ""}${firstAtribute} `;
     branchingOperation();
+}
+
+function machineCycleControlValidation(instruction){
+    let regex = new RegExp(regExpCatchComand[1]);
+    comand = instruction.match(regex);
+    if (!comandSet[3].includes(comand.toLowerCase())) {
+        interrupt();
+        return;
+    }
+     
+    machineCycleControlOperation();
+
 }
 

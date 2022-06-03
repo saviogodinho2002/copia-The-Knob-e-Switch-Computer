@@ -60,7 +60,6 @@ function dataMovementOperation() {
         routine(firstAtribute, firstAtribute, 4, secondAtribute, null);
     }
 
-
 }
 function updateFlags(lastOperationResult) {
     document.getElementById("flag-zero").innerHTML = "zero: " + (lastOperationResult == 0);
