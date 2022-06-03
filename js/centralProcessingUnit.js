@@ -91,6 +91,7 @@ function updateFlags(lastOperationResult) {
 }
 
 function routine(registerOneIndex, registerTwoIndex, aluOperationIndex, outPutIndex, dataFromMemory) {
+    
     stepsCallBacks.push(setTimeout(() => {
         setLastRegistersAndLastALUOperation(registerOneIndex, registerTwoIndex, aluOperationIndex);
         setDropDownsPointers(registerOneIndex, outPutIndex);

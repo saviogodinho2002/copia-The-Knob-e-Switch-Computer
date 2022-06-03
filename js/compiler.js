@@ -25,7 +25,7 @@ function readInstruction() { // analisador sintatico
     interrupt();
 
 }
-function aritmeticValidation(instruction) {//TODO: passar trabalho para a operation
+function aritmeticValidation(instruction) {
     let regex = new RegExp("([a-zA-Z]{2,3})", "g");
     comand = instruction.match(regex)[0];
 

@@ -10,6 +10,7 @@ function setZerosInMemAndRegis() {
         iterator.value = iterator.value == "" ? 0 : iterator.value;
     }
 }
+
 function setZerosInAluRegistersAndBusRegister() {
     AbusData.value = 0;
     BbusData.value = 0;

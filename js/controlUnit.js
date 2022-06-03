@@ -1,6 +1,6 @@
 const adressAmount = 32;
 function buttonStartClick() {
-    if (startOrStopButton.textContent == "start") {
+    if (startOrStopButton.textContent.trim() == "start") {
         startOrStopButton.textContent = "stop";
         execRoutine();
     } else {
@@ -9,34 +9,33 @@ function buttonStartClick() {
     }
 }
 function execRoutine() {
-    clearInterval(callbackRoutine);
-    //nextStep();
-    readInstruction();
-    setTimeout(() =>{
+    clearInterval(routineCallback);
+    incrementProgramCounterCallBack = setTimeout(() => {
         blankInput(cxProgramCounter);
         incrementProgramCounter();
-    },2000);
-    callbackRoutine = setInterval(() => {
-        //nextStep();
-        readInstruction();
-        setTimeout(() =>{
+    }, 2000);
+    readInstruction();
+    routineCallback = setInterval(() => {
+
+        incrementProgramCounterCallBack = setTimeout(() => {
             blankInput(cxProgramCounter);
             incrementProgramCounter();
-        },2000);
+        }, 2000);
+        readInstruction();
     }, time * 10);
 }
 
 function stop() {
-    clearInterval(callbackRoutine);
-    let iterator = 0;
+    clearInterval(routineCallback);
+    clearTimeout(incrementProgramCounterCallBack);
     while (stepsCallBacks.length) {
-        clearTimeout(stepsCallBacks[iterator]);
+        clearTimeout(stepsCallBacks[0]);
         stepsCallBacks.shift();
-    }   
+    }
 }
 function nextStep() {
     readInstruction();
-   
+
 }
 
 function incrementProgramCounter() {
@@ -49,8 +48,9 @@ function resetPc() {
     programCounter = 0;
     programCounterText.innerText = `PC:  ${programCounter}`;
 }
-function interrupt(){
-    clearInterval(callbackRoutine);
+function interrupt() {
+    clearInterval(routineCallback);
     interpretedComand.innerText = `operação invalida`
     startOrStopButton.textContent = "start";
+    clearTimeout(incrementProgramCounterCallBack);
 }
