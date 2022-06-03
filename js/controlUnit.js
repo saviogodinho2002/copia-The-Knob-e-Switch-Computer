@@ -2,25 +2,28 @@ const adressAmount = 32;
 function buttonStartClick() {
     if (startOrStopButton.textContent.trim() == "start") {
         startOrStopButton.textContent = "stop";
-        execRoutine();
+        execRoutine(true);
     } else {
         startOrStopButton.textContent = "start";
         stop();
     }
 }
-function execRoutine() {
+function execRoutine(initial) {
     clearInterval(routineCallback);
-    incrementProgramCounterCallBack = setTimeout(() => {
-        blankInput(cxProgramCounter);
-        incrementProgramCounter();
-    }, 2000);
-    readInstruction();
+    if (initial) {
+        incrementProgramCounterCallBack = setTimeout(() => {
+            blankInput(cxProgramCounter);
+            incrementProgramCounter();
+        }, 2000);
+        readInstruction();
+    }
     routineCallback = setInterval(() => {
 
         incrementProgramCounterCallBack = setTimeout(() => {
             blankInput(cxProgramCounter);
             incrementProgramCounter();
         }, 2000);
+
         readInstruction();
     }, time * 10);
 }
@@ -35,7 +38,6 @@ function stop() {
 }
 function nextStep() {
     readInstruction();
-
 }
 
 function incrementProgramCounter() {
@@ -53,4 +55,31 @@ function interrupt() {
     interpretedComand.innerText = `operação invalida`
     startOrStopButton.textContent = "start";
     clearTimeout(incrementProgramCounterCallBack);
+}
+
+function branchingOperation() {
+
+    const flagZero = document.getElementById("flag-zero");
+    const flagNegative = document.getElementById("flag-negative");
+
+    clearTimeout(incrementProgramCounterCallBack);  
+    clearInterval(routineCallback);
+
+    setTimeout(() => {
+        if (comand.toLowerCase().trim() == "branch") {
+            programCounter = firstAtribute;
+           
+            execRoutine(true);
+        } else if (comand.toLowerCase().trim() == "bneg") {
+            if (flagNegative.innerText.trim() == "negative: true") {
+                programCounter = firstAtribute - 1;
+            }
+        } if (comand.toLowerCase().trim() == "bzero") {
+            if (flagZero.innerText.trim() == "zero: true") {
+                programCounter = firstAtribute - 1;
+            }
+        }
+        programCounterText.innerText = `PC:  ${programCounter}`;
+    }, 2000);
+
 }

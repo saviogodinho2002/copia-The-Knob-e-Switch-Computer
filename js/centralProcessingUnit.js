@@ -1,26 +1,3 @@
-
-
-
-function branchingOperation() {
-
-    const flagZero = document.getElementById("flag-zero");
-    const flagNegative = document.getElementById("flag-negative");
-    console.log(flagNegative.innerText);
-    console.log(flagZero.innerText);
-
-    if (comand.toLowerCase().trim() == "branch") {
-        programCounter = firstAtribute - 1;
-    } else if (comand.toLowerCase().trim() == "bneg") {
-        if (flagNegative.innerText.trim() == "negative: true") {
-            programCounter = firstAtribute - 1;
-        }
-    } if (comand.toLowerCase().trim() == "bzero") {
-        if (flagZero.innerText.trim() == "zero: true") {
-            programCounter = firstAtribute - 1;
-        }
-    }
-
-}
 function aritmeticOperation() {
 
     const regB = document.getElementsByClassName("registrador")[lastRegisterA];
@@ -91,7 +68,7 @@ function updateFlags(lastOperationResult) {
 }
 
 function routine(registerOneIndex, registerTwoIndex, aluOperationIndex, outPutIndex, dataFromMemory) {
-    
+
     stepsCallBacks.push(setTimeout(() => {
         setLastRegistersAndLastALUOperation(registerOneIndex, registerTwoIndex, aluOperationIndex);
         setDropDownsPointers(registerOneIndex, outPutIndex);
