@@ -2,21 +2,21 @@ const adressAmount = 32;
 function buttonStartClick() {
     if (startOrStopButton.textContent.trim() == "start") {
         startOrStopButton.textContent = "stop";
-        execRoutine(true);
+        execRoutine();
     } else {
         startOrStopButton.textContent = "start";
         stop();
     }
 }
-function execRoutine(initial) {
+function execRoutine() {
     clearInterval(routineCallback);
-    if (initial) {
-        incrementProgramCounterCallBack = setTimeout(() => {
-            blankInput(cxProgramCounter);
-            incrementProgramCounter();
-        }, 2000);
-        readInstruction();
-    }
+
+    incrementProgramCounterCallBack = setTimeout(() => {
+        blankInput(cxProgramCounter);
+        incrementProgramCounter();
+    }, 2000);
+    readInstruction();
+
     routineCallback = setInterval(() => {
 
         incrementProgramCounterCallBack = setTimeout(() => {
@@ -62,23 +62,22 @@ function branchingOperation() {
     const flagZero = document.getElementById("flag-zero");
     const flagNegative = document.getElementById("flag-negative");
 
-    clearTimeout(incrementProgramCounterCallBack);  
+    clearTimeout(incrementProgramCounterCallBack);
     clearInterval(routineCallback);
 
     setTimeout(() => {
         if (comand.toLowerCase().trim() == "branch") {
             programCounter = firstAtribute;
-           
-            execRoutine(true);
         } else if (comand.toLowerCase().trim() == "bneg") {
             if (flagNegative.innerText.trim() == "negative: true") {
-                programCounter = firstAtribute - 1;
+                programCounter = firstAtribute;
             }
         } if (comand.toLowerCase().trim() == "bzero") {
             if (flagZero.innerText.trim() == "zero: true") {
-                programCounter = firstAtribute - 1;
+                programCounter = firstAtribute;
             }
         }
+        execRoutine();
         programCounterText.innerText = `PC:  ${programCounter}`;
     }, 2000);
 
