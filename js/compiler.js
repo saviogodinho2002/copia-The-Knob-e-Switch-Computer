@@ -85,9 +85,11 @@ function branchingValidation(instruction) {
 }
 
 function machineCycleControlValidation(instruction){
-    let regex = new RegExp(regExpCatchComand[1]);
-    comand = instruction.match(regex);
-    if (!comandSet[3].includes(comand.toLowerCase())) {
+    let regex = new RegExp(regExpCatchComand[3],"g");
+    comand = instruction.match(regex)[0].trim();
+    
+    console.log(comand);
+    if ( !comandSet[3].includes(comand.toLowerCase()) ) {
         interrupt();
         return;
     }

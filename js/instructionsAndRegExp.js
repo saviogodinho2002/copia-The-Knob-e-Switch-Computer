@@ -14,7 +14,8 @@ const regExpSyntaxValidation = [
 const regExpCatchComand = [
     "([a-zA-Z]{2,3})",
     "([a-zA-Z]{3,5})",
-    "([a-zA-Z]{3,6})"
+    "([a-zA-Z]{3,6})",
+    "([a-zA-Z]{3,4})"
 
 ];
 

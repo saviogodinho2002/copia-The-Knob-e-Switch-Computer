@@ -84,10 +84,14 @@ function branchingOperation() {
 }
 function machineCycleControlOperation(){
     if (comand.toLowerCase().trim() == "halt"){
-        startOrStopButton.textContent = "start";
+        
         cleanProcessQueue();
-
+        startOrStopButton.textContent = "start";
+        interpretedComand.innerText = `${comand.toLowerCase()}`;
+      
+        
     }else if(comand.toLowerCase().trim() == "nop"){
+        interpretedComand.innerText = `${comand.toLowerCase()}`;
         routine(-1, -1, 4, -1, -1);
     }
 
