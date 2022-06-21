@@ -3,7 +3,7 @@ function readInstruction() { // analisador sintatico
     const textOfCurrentAdress = currentAdress.value;
     cxReadedComand.innerHTML = ` <p class="label inbox" >  ${textOfCurrentAdress} </p>`;
 
-    let regex = new RegExp( regExpSyntaxValidation[0], "g");
+    let regex = new RegExp(regExpSyntaxValidation[0], "g");
 
     if (textOfCurrentAdress.match(regex) != null) { //add e os caralho
         aritmeticValidation(textOfCurrentAdress);
@@ -24,9 +24,9 @@ function readInstruction() { // analisador sintatico
         branchingValidation(textOfCurrentAdress);
         return;
     }
-    regex = new RegExp(regExpSyntaxValidation[3],"g");
-    
-    if(textOfCurrentAdress.match(regex)){
+    regex = new RegExp(regExpSyntaxValidation[3], "g");
+
+    if (textOfCurrentAdress.match(regex)) {
         machineCycleControlValidation(textOfCurrentAdress)
 
         return;
@@ -48,8 +48,8 @@ function aritmeticValidation(instruction) {
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
     thirdAtribute = parseInt(instruction.match(regex)[2]);
-    interpretedComand.innerText = `${comand.toLowerCase()} | 0${firstAtribute} | 0${secondAtribute} | 0${thirdAtribute} `;
-
+    // interpretedComand.innerText = `${comand.toLowerCase()} | 0${firstAtribute} | 0${secondAtribute} | 0${thirdAtribute} `;
+    setInterpretMicroInstruction(secondAtribute, thirdAtribute, comand.toLowerCase().trim(), thirdAtribute, 0);
     routine(secondAtribute, thirdAtribute, comandSet[0].indexOf(comand.toLowerCase().trim()), firstAtribute, null);
 }
 function dataMovementValidation(instruction) {
@@ -66,7 +66,16 @@ function dataMovementValidation(instruction) {
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
 
-    interpretedComand.innerText = `${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute}`;
+    // interpretedComand.innerText = `${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute}`;
+    const index = comandSet[1].indexOf(comand.toLowerCase());
+   /*  setInterpretMicroInstruction(
+       index%2 == 0
+        ,0
+        ,"",
+        index !=1?
+             firstAtribute:0
+
+    ); */
     dataMovementOperation();
 
 }
@@ -82,21 +91,37 @@ function branchingValidation(instruction) {
 
     regex = new RegExp(regExpCatchParamters[2], "g");
     firstAtribute = parseInt(instruction.match(regex)[0]);
-    interpretedComand.innerText = `${comand.toLowerCase()} | ${firstAtribute < 9 ? 0 : ""}${firstAtribute} `;
+    //interpretedComand.innerText = `${comand.toLowerCase()} | ${firstAtribute < 9 ? 0 : ""}${firstAtribute} `;
+    //setInterpretMicroInstruction()
     branchingOperation();
 }
 
-function machineCycleControlValidation(instruction){
-    let regex = new RegExp(regExpCatchComand[3],"g");
+function machineCycleControlValidation(instruction) {
+    let regex = new RegExp(regExpCatchComand[3], "g");
     comand = instruction.match(regex)[0].trim();
-    
+
     console.log(comand);
-    if ( !comandSet[3].includes(comand.toLowerCase()) ) {
+    if (!comandSet[3].includes(comand.toLowerCase())) {
         interrupt();
         return;
     }
-     
+
     machineCycleControlOperation();
+
+}
+
+function setInterpretMicroInstruction(aRegister, bRegister, aluOperation, outPutRegister, memoryAdress) {
+    const flatedComandSet = comandSet.flat();
+
+    interpretedComand.innerText =
+        `
+    ${aRegister.toString(2)} | 
+    ${bRegister.toString(2)} | 
+    ${(flatedComandSet.indexOf(aluOperation).toString(2))} |
+    ${outPutRegister.toString(2)} | 
+    ${memoryAdress.toString(2)}
+
+    `;
 
 }
 

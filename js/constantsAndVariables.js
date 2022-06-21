@@ -22,7 +22,7 @@ let stepsCallBacks = [];
 
 let lastRegisterA = 0;
 let lastRegisterB = 0;
-let lastAluOperation = "add";
+let lastAluOperation = 0;
 
 let comand;
 
