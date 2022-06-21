@@ -46,7 +46,7 @@ function dataMovementOperation() {
 
         const data = document.getElementsByClassName("endereco")[secondAtribute].value;
 
-        routine(-1, -1, 4, firstAtribute, data);
+        routine(-1, -1, -1, firstAtribute, data);
 
     } else if (comand.toLowerCase() == "store") {
 
@@ -109,9 +109,9 @@ function routine(registerOneIndex, registerTwoIndex, aluOperationIndex, outPutIn
 
 }
 function setLastRegistersAndLastALUOperation(ABusRegister, BBusRegister, AluOperation) {
-    lastRegisterA = ABusRegister == -1 ? lastRegisterA : ABusRegister;
-    lastRegisterB = BBusRegister == -1 ? lastRegisterB : BBusRegister;
-    lastAluOperation = AluOperation == -1 ? lastAluOperation : AluOperation;
+    lastRegisterA = ABusRegister == -1 ? 0 : ABusRegister;
+    lastRegisterB = BBusRegister == -1 ? 0 : BBusRegister;
+    lastAluOperation = AluOperation == -1 ? 0 : AluOperation;
 
 }
 function setDropDownsPointers(flag, outPut) {
