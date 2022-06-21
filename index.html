@@ -41,6 +41,12 @@
           onfocusout="verifyIfVoidString(this)" /> </div>
       <div class="registrador-container"> 3 <input class="caixa-de-texto registrador" name="instruction"
           onfocusout="verifyIfVoidString(this)" /> </div>
+      
+      <select id="time-select" onchange="changeInterval()" class="button-model">
+        <option value="1500"> slow </option>
+        <option selected value="1000"> normal </option>
+        <option value="500"> fast </option>
+      </select>
 
       <button class="button-model" onclick="nextStep()"> next</button>
       <button class="button-model" onclick="resetPc()"> reset</button>

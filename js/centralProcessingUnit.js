@@ -1,4 +1,4 @@
-function aritmeticOperation() {
+function aritmeticAndLogicUnit() {
 
     const regB = document.getElementsByClassName("registrador")[lastRegisterA];
     const regBValue = parseInt(regB.value == "" ? 0 : regB.value);
@@ -88,7 +88,7 @@ function routine(registerOneIndex, registerTwoIndex, aluOperationIndex, outPutIn
     }, time * 4));
 
     stepsCallBacks.push(setTimeout(() => {
-        aritmeticOperation();
+        aritmeticAndLogicUnit();
 
         stepsCallBacks.shift();
     }, time * 6));

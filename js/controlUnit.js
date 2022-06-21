@@ -8,13 +8,18 @@ function buttonStartClick() {
         cleanProcessQueue();
     }
 }
-function execRoutine() {
+function clearCallBacks() {
     clearInterval(routineCallback);
+    clearTimeout(incrementProgramCounterCallBack);
+}
+
+function execRoutine() {
+    clearCallBacks();
 
     incrementProgramCounterCallBack = setTimeout(() => {
         blankInput(cxProgramCounter);
         incrementProgramCounter();
-    }, 2000);
+    }, timeInterval);
     readInstruction();
 
     routineCallback = setInterval(() => {
@@ -22,15 +27,14 @@ function execRoutine() {
         incrementProgramCounterCallBack = setTimeout(() => {
             blankInput(cxProgramCounter);
             incrementProgramCounter();
-        }, 2000);
+        }, timeInterval);
 
         readInstruction();
     }, time * 10);
 }
 
 function cleanProcessQueue() {
-    clearInterval(routineCallback);
-    clearTimeout(incrementProgramCounterCallBack);
+    clearCallBacks();
     while (stepsCallBacks.length) {
         clearTimeout(stepsCallBacks[0]);
         stepsCallBacks.shift();
@@ -51,10 +55,10 @@ function resetPc() {
     programCounterText.innerText = `PC:  ${programCounter}`;
 }
 function interrupt() {
-    clearInterval(routineCallback);
+    clearCallBacks();
     interpretedComand.innerText = `operação invalida`
     startOrStopButton.textContent = "start";
-    clearTimeout(incrementProgramCounterCallBack);
+
 }
 
 function branchingOperation() {
@@ -62,8 +66,7 @@ function branchingOperation() {
     const flagZero = document.getElementById("flag-zero");
     const flagNegative = document.getElementById("flag-negative");
 
-    clearTimeout(incrementProgramCounterCallBack);
-    clearInterval(routineCallback);
+    clearCallBacks();
 
     setTimeout(() => {
         if (comand.toLowerCase().trim() == "branch") {
@@ -79,18 +82,18 @@ function branchingOperation() {
         }
         execRoutine();
         programCounterText.innerText = `PC:  ${programCounter}`;
-    }, 2000);
+    }, timeInterval);
 
 }
-function machineCycleControlOperation(){
-    if (comand.toLowerCase().trim() == "halt"){
-        
+function machineCycleControlOperation() {
+    if (comand.toLowerCase().trim() == "halt") {
+
         cleanProcessQueue();
         startOrStopButton.textContent = "start";
         interpretedComand.innerText = `${comand.toLowerCase()}`;
-      
-        
-    }else if(comand.toLowerCase().trim() == "nop"){
+
+
+    } else if (comand.toLowerCase().trim() == "nop") {
         interpretedComand.innerText = `${comand.toLowerCase()}`;
         routine(-1, -1, 4, -1, -1);
     }

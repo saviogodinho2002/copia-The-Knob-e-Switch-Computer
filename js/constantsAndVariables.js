@@ -32,8 +32,16 @@ const cxReadedComand = document.querySelector("#caixa-comando-lido");
 const interpretedComand = document.querySelector("#comando-interpretado");
 const cxProgramCounter = document.getElementsByClassName("pc")[0];
 
+const selectInterval = document.getElementById("time-select");
+
 let routineCallback = 0;
 let incrementProgramCounterCallBack = 0;
 
 let time = 1000;
+let timeInterval = (time*10) / 5;
+
+function changeInterval(){
+    time = parseInt(selectInterval.options[selectInterval.selectedIndex].value);
+    timeInterval = (time*10) / 5;    
+}
 

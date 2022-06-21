@@ -19,11 +19,13 @@ function readInstruction() { // analisador sintatico
     }
 
     regex = new RegExp(regExpSyntaxValidation[2], "g");
+
     if (textOfCurrentAdress.match(regex) != null) { //saltos condicionais
         branchingValidation(textOfCurrentAdress);
         return;
     }
     regex = new RegExp(regExpSyntaxValidation[3],"g");
+    
     if(textOfCurrentAdress.match(regex)){
         machineCycleControlValidation(textOfCurrentAdress)
 
