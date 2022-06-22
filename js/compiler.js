@@ -48,7 +48,7 @@ function aritmeticValidation(instruction) {
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
     thirdAtribute = parseInt(instruction.match(regex)[2]);
-    // interpretedComand.innerText = `${comand.toLowerCase()} | 0${firstAtribute} | 0${secondAtribute} | 0${thirdAtribute} `;
+
     setInterpretMicroInstruction(secondAtribute, thirdAtribute, comand.toLowerCase().trim(), thirdAtribute, 0);
     routine(secondAtribute, thirdAtribute, comandSet[0].indexOf(comand.toLowerCase().trim()), firstAtribute, null);
 }
@@ -66,7 +66,7 @@ function dataMovementValidation(instruction) {
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
 
-    // interpretedComand.innerText = `${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute}`;
+
     const index = comandSet[1].indexOf(comand.toLowerCase());
      setInterpretMicroInstruction(
        index%2 != 0?secondAtribute:0, // registrador a
@@ -92,8 +92,7 @@ function branchingValidation(instruction) {
 
     regex = new RegExp(regExpCatchParamters[2], "g");
     firstAtribute = parseInt(instruction.match(regex)[0]);
-    //interpretedComand.innerText = `${comand.toLowerCase()} | ${firstAtribute < 9 ? 0 : ""}${firstAtribute} `;
-    //setInterpretMicroInstruction()
+    
     branchingOperation();
 }
 

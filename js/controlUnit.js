@@ -55,8 +55,8 @@ function resetPc() {
     programCounterText.innerText = `PC:  ${programCounter}`;
 }
 function interrupt() {
-    clearCallBacks();
-    interpretedComand.innerText = `operação invalida`
+    cleanProcessQueue();
+    interpretedComand.innerText = "1111 | 1111 | 1111 | 1111 | 1111"
     startOrStopButton.textContent = "start";
 
 }
@@ -89,13 +89,10 @@ function machineCycleControlOperation() {
     if (comand.toLowerCase().trim() == "halt") {
 
         cleanProcessQueue();
-        startOrStopButton.textContent = "start";
-        interpretedComand.innerText = `${comand.toLowerCase()}`;
-
-
+        
     } else if (comand.toLowerCase().trim() == "nop") {
-        interpretedComand.innerText = `${comand.toLowerCase()}`;
-        routine(-1, -1, 4, -1, -1);
+        routineCallback = setInterval(execRoutine,time*10)
+       
     }
 
 }

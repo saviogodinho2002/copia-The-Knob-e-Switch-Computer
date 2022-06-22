@@ -9,15 +9,16 @@ body{
 .container{
     display: inline-block;
  
-    width: 70vw;
+    width: 75vw;
     height: 100vmin;
-    margin-left: 5px;
+    
     border-radius: 20px;
     
     border: 1px solid black;
     margin-top: 20px;
 
     overflow: hidden;
+    padding: 0px;
 }
 .little{
     margin-top: 10px;
@@ -28,11 +29,12 @@ body{
 }
 .mini{
     display: block;
-    width: 90%;
+    width: 95%;
     height: 20%;
     margin: 1 ;
     display: inline-block;
-    position: relative 
+    position: relative ;
+    padding:0px;
   
 }
 .label{
@@ -44,7 +46,8 @@ body{
     margin: 0;
     left: 50%;
    top: 50%;                         /* 3 */
-   transform: translate(-50%, -50%)
+   transform: translate(-50%, -50%);
+   font-size: 1rem;
 }
 .caixa-de-texto{
     border-radius: 10px;
