@@ -71,7 +71,7 @@ function dataMovementValidation(instruction) {
      setInterpretMicroInstruction(
        index%2 != 0?secondAtribute:0, // registrador a
         0,          // registrador b
-        index!=0?"add":"load",         // aluintruction
+        index==0?"add":"load",         // aluintruction
         index !=1?firstAtribute:0, //registrador de saida
 
         index%2 == 0 ?secondAtribute: // endereco de memoria utilizado

@@ -51,6 +51,7 @@ function dataMovementOperation() {
     } else if (comand.toLowerCase() == "store") {
 
         routine(secondAtribute, secondAtribute, 4, firstAtribute, null);
+        toMemory = true;
 
     } else if (comand.toLowerCase() == "mov") {
 
@@ -151,17 +152,21 @@ function setDataOnCbusAdress(memoryData) {
 }
 function setDataOnOutPutRegisterOrMemory(index) {
 
-    const typeMem = index > 3 ? "endereco" : "registrador";
+    const typeMem = toMemory ? "endereco" : "registrador";
     const out = document.getElementsByClassName(typeMem)[index];
 
-    if (index > 3) {
+    if (toMemory) {
+        toMemory = false;
         MemoryBusData.value = CbusData.value;
         blankInput(MemoryBusData);
-        stepsCallBacks.push(setTimeout(
+
+       setTimeout(
             () => {
-                out.value = CbusData.value;
                 blankInput(out);
-            }, time));
+                out.value = MemoryBusData.value;
+                
+            },Math.floor( timeInterval/2));
+           
     } else {
         out.value = CbusData.value;
         blankInput(out);

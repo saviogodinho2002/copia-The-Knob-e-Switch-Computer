@@ -40,8 +40,10 @@ let incrementProgramCounterCallBack = 0;
 let time = 1000;
 let timeInterval = (time*10) / 5;
 
+let toMemory = false;
+
 function changeInterval(){
     time = parseInt(selectInterval.options[selectInterval.selectedIndex].value);
-    timeInterval = (time*10) / 5;    
+    timeInterval = Math.floor((time*10) / 5);    
 }
 
