@@ -52,7 +52,7 @@ function dataMovementOperation() {
 
         routine(secondAtribute, secondAtribute, 4, firstAtribute, null);
 
-    } else if (comand.toLowerCase() == "move") {
+    } else if (comand.toLowerCase() == "mov") {
 
         routine(secondAtribute, secondAtribute, 4,firstAtribute, null);
     } else if (comand.toLowerCase() == "not") {

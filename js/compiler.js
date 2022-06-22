@@ -68,14 +68,15 @@ function dataMovementValidation(instruction) {
 
     // interpretedComand.innerText = `${comand.toLowerCase()} | ${(firstAtribute < 10 ? "0" : "") + firstAtribute} | ${(secondAtribute < 10 ? "0" : "") + secondAtribute}`;
     const index = comandSet[1].indexOf(comand.toLowerCase());
-   /*  setInterpretMicroInstruction(
-       index%2 == 0
-        ,0
-        ,"",
-        index !=1?
-             firstAtribute:0
+     setInterpretMicroInstruction(
+       index%2 != 0?secondAtribute:0, // registrador a
+        0,          // registrador b
+        index!=0?"add":"load",         // aluintruction
+        index !=1?firstAtribute:0, //registrador de saida
 
-    ); */
+        index%2 == 0 ?secondAtribute: // endereco de memoria utilizado
+            index == 3? 0: firstAtribute
+    ); 
     dataMovementOperation();
 
 }
@@ -111,15 +112,9 @@ function machineCycleControlValidation(instruction) {
 }
 
 function setInterpretMicroInstruction(aRegister, bRegister, aluOperation, outPutRegister, memoryAdress) {
-    const flatedComandSet = comandSet.flat();
-
-    interpretedComand.innerText =
-        `
-    ${aRegister.toString(2)} | 
-    ${bRegister.toString(2)} | 
-    ${(flatedComandSet.indexOf(aluOperation).toString(2))} |
-    ${outPutRegister.toString(2)} | 
-    ${memoryAdress.toString(2)}
+    
+    interpretedComand.innerText = 
+    `${aRegister.toString(2)} | ${bRegister.toString(2)} | ${(comandSet.flat().indexOf(aluOperation).toString(2))} | ${outPutRegister.toString(2)} | ${memoryAdress.toString(2)}
 
     `;
 
