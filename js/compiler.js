@@ -3,44 +3,59 @@ function readInstruction() { // analisador sintatico
     const textOfCurrentAdress = currentAdress.value;
     cxReadedComand.innerHTML = ` <p class="label inbox" >  ${textOfCurrentAdress} </p>`;
 
-    let regex = new RegExp(regExpSyntaxValidation[0], "g");
+    let regex = new RegExp(regExpGeralValidation[0], "g");
 
-    if (textOfCurrentAdress.match(regex) != null) { //add e os caralho
-        aritmeticValidation(textOfCurrentAdress);
-        return;
-    }
+    if (textOfCurrentAdress.match(regex) == null) {
+        regex = new RegExp(regExpGeralValidation[1], "g");
 
-    for (const regexValid of regExpSyntaxValidation[1]) { //load e store
-        regex = new RegExp(regexValid, "g");
-        if (textOfCurrentAdress.match(regex) != null) {
-            dataMovementValidation(textOfCurrentAdress);
+        if (textOfCurrentAdress.match(regex) == null) {
+            interrupt();
             return;
         }
     }
 
-    regex = new RegExp(regExpSyntaxValidation[2], "g");
+    /////
+    regex = new RegExp(regExpCatchComand[0], "g");
+    comand = textOfCurrentAdress.match(regex)[0];
 
-    if (textOfCurrentAdress.match(regex) != null) { //saltos condicionais
+    if (comandSet[0].includes(comand.toLowerCase())) {
+        aritmeticValidation(textOfCurrentAdress);
+        return;
+    }
+
+    regex = new RegExp(regExpCatchComand[1], "g");
+    comand = textOfCurrentAdress.match(regex)[0];
+
+    if (comandSet[1].includes(comand.toLowerCase())) {
+        dataMovementValidation(textOfCurrentAdress);
+        return;
+    }
+
+    regex = new RegExp(regExpCatchComand[2], "g");
+    comand = textOfCurrentAdress.match(regex)[0];
+
+    if (comandSet[2].includes(comand.toLowerCase())) {
         branchingValidation(textOfCurrentAdress);
         return;
     }
-    regex = new RegExp(regExpSyntaxValidation[3], "g");
 
-    if (textOfCurrentAdress.match(regex)) {
+    regex = new RegExp(regExpCatchComand[3], "g");
+    comand = textOfCurrentAdress.match(regex)[0];
+
+    if (comandSet[3].includes(comand.toLowerCase())) {
         machineCycleControlValidation(textOfCurrentAdress)
-
         return;
     }
+
     interrupt();
 
 }
 function aritmeticValidation(instruction) {
-    let regex = new RegExp(regExpCatchComand[0], "g");
-    comand = instruction.match(regex)[0];
+    let regex = new RegExp(regExpParametersValidation[0], "g");
 
-    if (!comandSet[0].includes(comand.toLowerCase())) {
+    // regex = new RegExp(regExpCatchParamters[0], "g");
+    if (instruction.match(regex) == null) {
         interrupt();
-        return;
     }
 
     regex = new RegExp(regExpCatchParamters[0], "g");
@@ -50,58 +65,57 @@ function aritmeticValidation(instruction) {
     thirdAtribute = parseInt(instruction.match(regex)[2]);
 
     setInterpretMicroInstruction(secondAtribute, thirdAtribute, comand.toLowerCase().trim(), thirdAtribute, 0);
+
     routine(secondAtribute, thirdAtribute, comandSet[0].indexOf(comand.toLowerCase().trim()), firstAtribute, null);
 }
 function dataMovementValidation(instruction) {
-    let regex = new RegExp(regExpCatchComand[1], "g");
 
-    comand = instruction.match(regex)[0].trim();
+    const index = comandSet[1].indexOf(comand.toLowerCase());
+    console.log(index)
+    let regex = new RegExp(regExpParametersValidation[1][index], "g");
 
-    if (!comandSet[1].includes(comand.toLowerCase())) {
+    if (instruction.match(regex) == null) {
         interrupt();
-        return;
     }
 
     regex = new RegExp(regExpCatchParamters[1], "g");
+
     firstAtribute = parseInt(instruction.match(regex)[0]);
     secondAtribute = parseInt(instruction.match(regex)[1]);
 
 
-    const index = comandSet[1].indexOf(comand.toLowerCase());
-     setInterpretMicroInstruction(
-       index%2 != 0?secondAtribute:0, // registrador a
+    setInterpretMicroInstruction(
+        index % 2 != 0 ? secondAtribute : 0, // registrador a
         0,          // registrador b
-        index==0?"add":"load",         // aluintruction
-        index !=1?firstAtribute:0, //registrador de saida
+        index == 0 ? "add" : "load",         // aluintruction
+        index != 1 ? firstAtribute : 0, //registrador de saida
 
-        index%2 == 0 ?secondAtribute: // endereco de memoria utilizado
-            index == 3? 0: firstAtribute
-    ); 
+        index % 2 == 0 ? secondAtribute : // endereco de memoria utilizado
+            index == 3 ? 0 : firstAtribute
+    );
     dataMovementOperation();
 
 }
 function branchingValidation(instruction) {
 
-    let regex = new RegExp(regExpCatchComand[2], "g");
-    comand = instruction.match(regex)[0].trim();
+    let regex = new RegExp(regExpParametersValidation[2], "g");
+   
 
-    if (!comandSet[2].includes(comand.toLowerCase())) {
+    if (instruction.match(regex) == null) {
         interrupt();
-        return;
     }
 
     regex = new RegExp(regExpCatchParamters[2], "g");
+
     firstAtribute = parseInt(instruction.match(regex)[0]);
-    
+
     branchingOperation();
 }
 
 function machineCycleControlValidation(instruction) {
-    let regex = new RegExp(regExpCatchComand[3], "g");
-    comand = instruction.match(regex)[0].trim();
+    let regex = new RegExp(("^\\s*" + comand.toLowerCase() + "\\s*$"), "g");
 
-    console.log(comand);
-    if (!comandSet[3].includes(comand.toLowerCase())) {
+    if (!instruction.match(regex) == null) {
         interrupt();
         return;
     }
@@ -111,9 +125,9 @@ function machineCycleControlValidation(instruction) {
 }
 
 function setInterpretMicroInstruction(aRegister, bRegister, aluOperation, outPutRegister, memoryAdress) {
-    
-    interpretedComand.innerText = 
-    `${aRegister.toString(2)} | ${bRegister.toString(2)} | ${(comandSet.flat().indexOf(aluOperation).toString(2))} | ${outPutRegister.toString(2)} | ${memoryAdress.toString(2)}
+
+    interpretedComand.innerText =
+        `${aRegister.toString(2)} | ${bRegister.toString(2)} | ${(comandSet.flat().indexOf(aluOperation).toString(2))} | ${outPutRegister.toString(2)} | ${memoryAdress.toString(2)}
 
     `;
 
