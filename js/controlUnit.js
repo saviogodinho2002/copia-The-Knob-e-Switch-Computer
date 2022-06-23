@@ -88,7 +88,7 @@ function branchingOperation() {
 function machineCycleControlOperation() {
     if (comand.toLowerCase().trim() == "halt") {
 
-        cleanProcessQueue();
+        interrupt();
         
     } else if (comand.toLowerCase().trim() == "nop") {
         routineCallback = setInterval(execRoutine,time*10)
