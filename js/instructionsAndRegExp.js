@@ -1,6 +1,6 @@
 const comandSet = [
     ["add", "sub", "div", "mul", "or", "and"],
-    [ "load","store","not","move" ],
+    [ "load","store","move","not" ],
     ["branch", "bzero", "bneg"],
     ["halt", "nop"]
 ];

@@ -5,61 +5,58 @@ function aritmeticAndLogicUnit() {
     const regC = document.getElementsByClassName("registrador")[lastRegisterB];
     const regCValue = parseInt(regC.value == "" ? 0 : regC.value);
 
-
-    if (comandSet[0][lastAluOperation] == "add") {
-
-        BufferAluRegister.value = (regBValue + regCValue);
-
-    } else if (comandSet[0][lastAluOperation] == "sub") {
-
-        BufferAluRegister.value = (regBValue - regCValue);
-
-    } else if (comandSet[0][lastAluOperation] == "div") {
-
-        BufferAluRegister.value = (regBValue / regCValue);
-
-    } else if (comandSet[0][lastAluOperation] == "mul") {
-
-        BufferAluRegister.value = (regBValue * regCValue);
-
-    } else if (comandSet[0][lastAluOperation] == "and") {
-
-        BufferAluRegister.value = regBValue | regCValue;
-
-    } else if (comandSet[0][lastAluOperation] == "or" && thirdAtribute != -1) {
-
-        BufferAluRegister.value = regBValue | regCValue;
-
-
-    } else if (comandSet[1][lastAluOperation - 1] == "not") {
-
-        BufferAluRegister.value = -1 * (regBValue | regCValue);
-
+    switch (lastAluOperation) {
+        case 0:
+            BufferAluRegister.value = (regBValue + regCValue);
+            break;
+        case 1:
+            BufferAluRegister.value = (regBValue - regCValue);
+            break;
+        case 2:
+            BufferAluRegister.value = (regBValue / regCValue);
+            break;
+        case 3:
+            BufferAluRegister.value = (regBValue * regCValue);
+            break;
+        case 4:
+            BufferAluRegister.value = regBValue | regCValue;
+            break;
+        case 5:
+            BufferAluRegister.value = regBValue & regCValue;
+            break;
+        default:
+            BufferAluRegister.value = -1 * (regBValue | regCValue);
+            break;
     }
+
     blankInput(BufferAluRegister);
     updateFlags(parseInt(BufferAluRegister.value));
 
 }
 function dataMovementOperation() {
     thirdAtribute = 0;
-    if (comand.toLowerCase() == "load") {
 
-        const data = document.getElementsByClassName("endereco")[secondAtribute].value;
+    switch (comandSet[1].indexOf(comand.toLowerCase())) {
+        case 0:
+            const data = document.getElementsByClassName("endereco")[secondAtribute].value;
 
-        routine(-1, -1, -1, firstAtribute, data);
+            routine(-1, -1, -1, firstAtribute, data);
+            break;
+        case 1:
+            routine(secondAtribute, secondAtribute, 4, firstAtribute, null);
+            toMemory = true;
+            break;
+        case 2:
+            routine(secondAtribute, secondAtribute, 4, firstAtribute, null);
+            break;
+        case 3:
 
-    } else if (comand.toLowerCase() == "store") {
-
-        routine(secondAtribute, secondAtribute, 4, firstAtribute, null);
-        toMemory = true;
-
-    } else if (comand.toLowerCase() == "mov") {
-
-        routine(secondAtribute, secondAtribute, 4,firstAtribute, null);
-    } else if (comand.toLowerCase() == "not") {
-        thirdAtribute = -1;
-        routine(firstAtribute, firstAtribute, 4, secondAtribute, null);
+        default:
+            thirdAtribute = -1;
+            routine(firstAtribute, firstAtribute, 4, secondAtribute, null);
+            break;
     }
+
 
 }
 function updateFlags(lastOperationResult) {
@@ -104,7 +101,7 @@ function routine(registerOneIndex, registerTwoIndex, aluOperationIndex, outPutIn
         setDataOnOutPutRegisterOrMemory(outPutIndex);
 
         stepsCallBacks.shift();
-        
+
     }, time * 9));
 
 
@@ -160,13 +157,13 @@ function setDataOnOutPutRegisterOrMemory(index) {
         MemoryBusData.value = CbusData.value;
         blankInput(MemoryBusData);
 
-       setTimeout(
+        setTimeout(
             () => {
                 blankInput(out);
                 out.value = MemoryBusData.value;
-                
-            },Math.floor( timeInterval/2));
-           
+
+            }, Math.floor(timeInterval / 2));
+
     } else {
         out.value = CbusData.value;
         blankInput(out);
